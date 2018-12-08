@@ -5,11 +5,17 @@ using UnityEngine;
 public class Pickup : MonoBehaviour, IInteractable
 {
     public Transform pivot;
+    public Light myLight;
     public float rotateSpeed;
+
+    public void MouseOut()
+    {
+        myLight.enabled = false;
+    }
 
     public void MouseOver()
     {
-        Debug.LogFormat("{0} hovered", name);
+        myLight.enabled = true;
     }
 
     private void Update()

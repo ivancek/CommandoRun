@@ -178,12 +178,12 @@ GameObject:
   - component: {fileID: 33882072047693306}
   - component: {fileID: 23250100795031358}
   m_Layer: 0
-  m_Name: Knife
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1182125884603254
 GameObject:
   m_ObjectHideFlags: 1
@@ -2964,7 +2964,7 @@ NavMeshAgent:
   m_Speed: 4.8
   m_Acceleration: 24
   avoidancePriority: 50
-  m_AngularSpeed: 0
+  m_AngularSpeed: 720
   m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0

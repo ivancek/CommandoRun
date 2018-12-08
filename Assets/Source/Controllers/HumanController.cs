@@ -11,22 +11,59 @@ public class HumanController : PlayerController
     private Soldier soldier;
     private Ray ray;
     private RaycastHit hit;
+    private Vector3 lastMousePosition;
+    private IInteractable previousInteraction;
+
+
 
     /// <summary>
     /// MonoBehaviour Update
     /// </summary>
     private void Update()
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastIntoWorld();
+    }
 
-        if (Physics.Raycast(ray, out hit))
+
+    /// <summary>
+    /// Casts a ray into the world
+    /// </summary>
+    private void RaycastIntoWorld()
+    {
+        // Only raycast if we moved the mouse.
+        if (lastMousePosition != Input.mousePosition)
         {
-            IInteractable interactable = hit.transform.GetComponent<IInteractable>();
+            // Get the ray from screen
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (interactable != null)
+            // Raycast
+            if (Physics.Raycast(ray, out hit))
             {
-                interactable.MouseOver();
+                IInteractable currentInteraction = hit.transform.GetComponent<IInteractable>();
+
+                if(currentInteraction != previousInteraction)
+                {
+                    // Notify previousInteraction (if any) that mouse is out.
+                    if(previousInteraction != null)
+                    {
+                        previousInteraction.MouseOut();
+                    }
+                
+                    // Notify current intaraction of mouse over.
+                    if (currentInteraction != null)
+                    {
+                        currentInteraction.MouseOver();
+                    }
+
+                }
+
+                // Set previous interaciton to whatever it is now.
+                previousInteraction = currentInteraction;
             }
+
+
+            // Finally, set last mouse pos to current mouse pos to prevent raycasting next frame.
+            lastMousePosition = Input.mousePosition;
         }
     }
 

@@ -36,19 +36,27 @@ public class Soldier : Pawn
     /// </summary>
     private void Update()
     {
+        RotateTowardsTargetRotation(targetRot);
 
         if (isMoving)
         {
-            
-            var step = desiredRotationSpeed * Time.deltaTime;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, step);
-
             if (DestinationReached)
             {
                 myAnimator.SetInteger("speed", 0);
                 isMoving = false;
             }
         }
+    }
+
+
+
+    /// <summary>
+    /// Rotates towards target rotation
+    /// </summary>
+    private void RotateTowardsTargetRotation(Quaternion newRot)
+    {
+        var step = desiredRotationSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, step);
     }
 
 
