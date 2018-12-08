@@ -9,6 +9,27 @@ using UnityEngine;
 public class HumanController : PlayerController
 {
     private Soldier soldier;
+    private Ray ray;
+    private RaycastHit hit;
+
+    /// <summary>
+    /// MonoBehaviour Update
+    /// </summary>
+    private void Update()
+    {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            IInteractable interactable = hit.transform.GetComponent<IInteractable>();
+
+            if (interactable != null)
+            {
+                interactable.MouseOver();
+            }
+        }
+    }
+
 
     /// <summary>
     /// Casts the controlled pawn to soldier. Need a reference for easier use later.
@@ -28,7 +49,7 @@ public class HumanController : PlayerController
     {
         base.InitializeInputComponent(component);
 
-        component.BindAction("Fire1", Fire);
+        component.BindAction("LeftClick", HandleLeftClick);
         component.BindAction("ToggleWalkRun", ToggleWalkRun);
     }
 
@@ -45,17 +66,11 @@ public class HumanController : PlayerController
     /// <summary>
     /// Player controller fire method
     /// </summary>
-    private void Fire()
+    private void HandleLeftClick()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit outHit;
-
-        if(Physics.Raycast(ray, out outHit))
+        if (hit.transform.GetComponent<NavigationSurface>())
         {
-            if(outHit.transform.GetComponent<NavigationSurface>())
-            {
-                soldier.SetDestination(outHit.point);
-            }
+            soldier.SetDestination(hit.point);
         }
     }
 }
