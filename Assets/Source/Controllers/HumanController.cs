@@ -56,7 +56,15 @@ public class HumanController : PlayerController
 
             if(interaction != null)
             {
-                interaction.Interact();
+                if(soldier.IsInMeleeRange(outHit.transform.position))
+                {
+                    interaction.Interact();
+                }
+                else
+                {
+                    soldier.SetDestination(outHit.transform.position);
+                }
+
                 return;
             }
 

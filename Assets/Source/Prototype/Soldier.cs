@@ -11,6 +11,7 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class Soldier : Pawn
 {
+    public float MELEE_RANGE = 1.2f;
     public float RUN_SPEED = 4.8f;
     public float WALK_SPEED = 1.5f;
     public float MIN_ROT_SPEED = 100.0f;
@@ -20,11 +21,12 @@ public class Soldier : Pawn
     public NavMeshAgent navAgent;
     public Animator myAnimator;
 
+
     // Private Properties for easier code reading.
     private int AnimatorSpeed { get { return isRunning ? 2 : 1; } }
     private float NavAgentSpeed { get { return isRunning ? RUN_SPEED : WALK_SPEED; } }
     private bool DestinationReached { get { return Vector3.Distance(transform.position, navAgent.destination) <= navAgent.stoppingDistance; } }
-
+    
     // Private fields
     private bool isRunning;
     private bool isMoving;
@@ -68,6 +70,12 @@ public class Soldier : Pawn
         base.Init();
 
         navAgent.speed = WALK_SPEED;
+    }
+
+
+    public bool IsInMeleeRange(Vector3 location)
+    {
+        return Vector3.Distance(transform.position, location) < MELEE_RANGE;
     }
 
 
