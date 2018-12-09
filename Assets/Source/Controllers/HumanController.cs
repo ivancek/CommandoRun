@@ -9,7 +9,9 @@ using UnityEngine;
 public class HumanController : PlayerController
 {
     private Soldier soldier;
-
+    
+    
+    
     /// <summary>
     /// Casts the controlled pawn to soldier. Need a reference for easier use later.
     /// </summary>
@@ -20,6 +22,7 @@ public class HumanController : PlayerController
         soldier = (Soldier)GetControlledPawn();
     }
 
+
     /// <summary>
     /// Override this to add your own input bindings.
     /// </summary>
@@ -28,8 +31,8 @@ public class HumanController : PlayerController
     {
         base.InitializeInputComponent(component);
 
-        component.BindAction("LeftClick", HandleLeftClick);
-        component.BindAction("ToggleWalkRun", ToggleWalkRun);
+        component.BindAction("LeftClick", EInputEvent.Repeat, HandleMouseButtonDown);
+        component.BindAction("ToggleWalkRun", EInputEvent.Pressed, ToggleWalkRun);
     }
 
 
@@ -45,34 +48,91 @@ public class HumanController : PlayerController
     /// <summary>
     /// Player controller fire method
     /// </summary>
-    private void HandleLeftClick()
+    private void HandleMouseButtonDown()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit outHit;
 
-        if(Physics.Raycast(ray, out outHit))
+        if (Physics.Raycast(ray, out outHit))
         {
-            IInteractable interaction = outHit.transform.GetComponent<IInteractable>();
-            soldier.SetQueuedInteraction(interaction);
+            // Early exit if we hit ourselves.
+            if(outHit.collider.gameObject == GetControlledPawn().gameObject) { return; }
 
-            if (interaction != null)
-            {
-                if(soldier.IsInMeleeRange(outHit.transform.position))
-                {
-                    soldier.InteractWith(interaction);
-                }
-                else
-                {
-                    soldier.SetDestination(outHit.transform.position);
-                }
-            }
-
-            if(outHit.transform.GetComponent<NavigationSurface>())
-            {
-                soldier.SetDestination(outHit.point);
-            }
-
-            
+            if (HandleAttack(outHit)) return;
+            if (HandleInteraction(outHit)) return;
+            if (HandleNavigation(outHit)) return;
         }
+    }
+
+
+    /// <summary>
+    /// Checks for IDamageReceiver in RaycastHit result.
+    /// If found, attacks when in range, otherwise sets destination.
+    /// </summary>
+    /// <param name="outHit"></param>
+    /// <returns></returns>
+    private bool HandleAttack(RaycastHit outHit)
+    {
+        IDamageReceiver target = outHit.transform.GetComponent<IDamageReceiver>();
+
+        soldier.SetQueuedTarget(target);
+
+        if (target == null)
+        {
+            return false;
+        }
+
+        if (soldier.IsInWeaponRange(outHit.transform.position))
+        {
+            soldier.Attack(target);
+        }
+        else
+        {
+            soldier.SetDestination(outHit.transform.position);
+        }
+
+        return true;
+    }
+
+
+    /// <summary>
+    /// Checks for IInteractable in RaycastHit result. 
+    /// If found, interacts when in range, otherwise sets destination.
+    /// </summary>
+    private bool HandleInteraction(RaycastHit outHit)
+    {
+        IInteractable interaction = outHit.transform.GetComponent<IInteractable>();
+        soldier.SetQueuedInteraction(interaction);
+
+        if (interaction == null)
+        {
+            return false;
+        }
+
+        if (soldier.IsInMeleeRange(outHit.transform.position))
+        {
+            soldier.InteractWith(interaction);
+        }
+        else
+        {
+            soldier.SetDestination(outHit.transform.position);
+        }
+
+        return true;
+    }
+
+
+    /// <summary>
+    /// Sets soldier destination if surface found.
+    /// </summary>
+    private bool HandleNavigation(RaycastHit outHit)
+    {
+        if (outHit.transform.GetComponent<NavigationSurface>())
+        {
+            soldier.SetDestination(outHit.point);
+            return true;
+        }
+
+        return false;
     }
 }

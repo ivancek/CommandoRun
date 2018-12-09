@@ -778,6 +778,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4757482029221870}
   - component: {fileID: 114244687584567736}
+  - component: {fileID: 136976106426375144}
+  - component: {fileID: 54678473580930398}
   - component: {fileID: 95032068585856566}
   - component: {fileID: 195952518095855820}
   m_Layer: 0
@@ -1322,7 +1324,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1981960619317264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 56.66, y: 0, z: 40.21}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4122387124718588}
@@ -1546,6 +1548,21 @@ Transform:
   m_Father: {fileID: 4207012860062120}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &54678473580930398
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1981960619317264}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!95 &95032068585856566
 Animator:
   serializedVersion: 3
@@ -1575,14 +1592,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c27247a5fb52e4eb4e0512de70bdb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MELEE_RANGE: 1.2
+  MELEE_RANGE: 2
   RUN_SPEED: 4.8
   WALK_SPEED: 1.4
   MIN_ROT_SPEED: 100
   MAX_ROT_SPEED: 400
+  MAX_HEALTH: 100
   navAgent: {fileID: 195952518095855820}
   myAnimator: {fileID: 95032068585856566}
   weaponContainer: {fileID: 4130698799505590}
+--- !u!136 &136976106426375144
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1981960619317264}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 2.6
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.3, z: 0}
 --- !u!137 &137009330486654436
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -2893,8 +2924,8 @@ NavMeshAgent:
   m_Speed: 4.8
   m_Acceleration: 24
   avoidancePriority: 50
-  m_AngularSpeed: 720
-  m_StoppingDistance: 1
+  m_AngularSpeed: 900
+  m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1

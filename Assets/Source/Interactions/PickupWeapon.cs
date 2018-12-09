@@ -8,7 +8,7 @@ public class PickupWeapon : Pickup
     {
         Soldier soldier = (Soldier)controller.GetControlledPawn();
 
-        soldier.EquipPrimary(itemData.prefab);
+        soldier.EquipPrimary(itemData);
         Destroy(gameObject);
     }
 }

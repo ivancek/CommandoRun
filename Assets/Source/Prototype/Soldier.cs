@@ -9,13 +9,15 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Base class for all soldiers in the game.
 /// </summary>
-public class Soldier : Pawn
+public class Soldier : Pawn, IDamageReceiver
 {
+    [Header("Setup")]
     public float MELEE_RANGE = 1.2f;
     public float RUN_SPEED = 4.8f;
     public float WALK_SPEED = 1.5f;
     public float MIN_ROT_SPEED = 100.0f;
     public float MAX_ROT_SPEED = 400.0f;
+    public float MAX_HEALTH = 100.0f;
 
     // Set in Inspector
     public NavMeshAgent navAgent;
@@ -30,24 +32,35 @@ public class Soldier : Pawn
 
     // Private fields
     private IInteractable queuedInteraction;
+    private IDamageReceiver queuedTarget;
+
     private EquipableDevice primaryDevice;
+    private Quaternion targetRot;
+
     private bool isRunning;
     private bool isMoving;
-    private Quaternion targetRot;
+    private bool forceRotation;
     private float desiredRotationSpeed;
 
     /// <summary>
-    /// MonoBehaviour Update.
+    /// Actor Tick.
     /// </summary>
-    private void Update()
+    public override void Tick(float deltaTime)
     {
-        RotateTowardsTargetRotation(targetRot);
+        base.Tick(deltaTime);
+
+        // We force the rotation to override navAgent's rotation speed. See SetDestination function.
+        if(forceRotation)
+        {
+            RotateTowardsTargetRotation(targetRot);
+        }
 
         if (isMoving)
         {
             if (DestinationReached)
             {
                 myAnimator.SetInteger("speed", 0);
+                Attack(queuedTarget);
                 InteractWith(queuedInteraction);
                 isMoving = false;
             }
@@ -55,87 +68,21 @@ public class Soldier : Pawn
     }
 
 
-
     /// <summary>
-    /// Rotates towards target rotation
+    /// Quickly rotates towards target rotation.
+    /// Sets forceRotation to false, once angle is lower than 5.
+    /// Helper function to keep code cleaner.
     /// </summary>
     private void RotateTowardsTargetRotation(Quaternion newRot)
     {
-        var step = desiredRotationSpeed * Time.deltaTime;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, step);
-    }
-
-
-    /// <summary>
-    /// MonoBehaviour Awake
-    /// </summary>
-    public override void Init()
-    {
-        base.Init();
-
-        navAgent.speed = WALK_SPEED;
-    }
-
-
-    /// <summary>
-    /// Sets queued interaction. When Soldier is out of range, we use this to remember
-    /// what to do when he reaches the destination. Think walk to and use.
-    /// </summary>
-    /// <param name="interaction"></param>
-    public void SetQueuedInteraction(IInteractable interaction)
-    {
-        queuedInteraction = interaction;
-    }
-
-
-    /// <summary>
-    /// Interacts with interaction and clears it.
-    /// </summary>
-    /// <param name="interaction"></param>
-    public void InteractWith(IInteractable interaction)
-    {
-        if(interaction != null)
+        if(Quaternion.Angle(transform.rotation, newRot) > 5)
         {
-            interaction.Interact(GetController());
-            SetQueuedInteraction(null);
+            var step = desiredRotationSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, step);
+            return;
         }
-    }
 
-    /// <summary>
-    /// Sets the primary device by spawning it.
-    /// </summary>
-    /// <param name="device"></param>
-    public void EquipPrimary(EquipableDevice device)
-    {
-        primaryDevice = Instantiate(device, weaponContainer, false);
-
-        myAnimator.SetTrigger("draw");
-    }
-
-
-    /// <summary>
-    /// Is the soldier in melee range from location?
-    /// </summary>
-    public bool IsInMeleeRange(Vector3 location)
-    {
-        return Vector3.Distance(transform.position, location) < MELEE_RANGE;
-    }
-
-
-    /// <summary>
-    /// Sets the destination of navAgent.
-    /// </summary>
-    public void SetDestination(Vector3 destination)
-    {
-        // We need to mark the soldier as moving. (needed in update).
-        isMoving = true;
-
-        targetRot = GetTargetRotation(destination);
-        desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
-
-        // Notify nav agent and animator of new changes.
-        myAnimator.SetInteger("speed", AnimatorSpeed);
-        navAgent.SetDestination(destination);
+        forceRotation = false;
     }
 
 
@@ -166,6 +113,129 @@ public class Soldier : Pawn
 
 
     /// <summary>
+    /// Just fucking Die!
+    /// </summary>
+    private void Die()
+    {
+        int randomInt = UnityEngine.Random.Range(1, 6);
+        navAgent.enabled = false;
+        myAnimator.Play(string.Format("Death{0}", randomInt));
+    }
+
+
+    /// <summary>
+    /// MonoBehaviour Awake
+    /// </summary>
+    public override void Init()
+    {
+        base.Init();
+
+        navAgent.speed = WALK_SPEED;
+    }
+
+
+    /// <summary>
+    /// Sets queued interaction. When Soldier is out of range, we use this to remember
+    /// what to do when he reaches the destination. Think walk to and use.
+    /// </summary>
+    /// <param name="interaction"></param>
+    public void SetQueuedInteraction(IInteractable interaction)
+    {
+        queuedInteraction = interaction;
+    }
+
+
+    /// <summary>
+    /// Sets queued interaction. When Soldier is out of range, we use this to remember
+    /// what to do when he reaches the destination. Think walk to and use.
+    /// </summary>
+    /// <param name="interaction"></param>
+    public void SetQueuedTarget(IDamageReceiver target)
+    {
+        queuedTarget = target;
+    }
+
+
+    /// <summary>
+    /// Interacts with interaction and clears it.
+    /// </summary>
+    public void InteractWith(IInteractable interaction)
+    {
+        if(interaction != null)
+        {
+            interaction.Interact(GetController());
+            SetQueuedInteraction(null);
+        }
+    }
+
+
+    /// <summary>
+    /// Deals damage the taret.
+    /// </summary>
+    public void Attack(IDamageReceiver target)
+    {
+        if(target != null && primaryDevice)
+        {
+            primaryDevice.Use(myAnimator);
+            SetQueuedTarget(null);
+        }
+    }
+
+
+    /// <summary>
+    /// Sets the primary device by spawning it.
+    /// </summary>
+    public void EquipPrimary(ItemData deviceData)
+    {
+        primaryDevice = Instantiate(deviceData.prefab, weaponContainer, false);
+        primaryDevice.SetData(deviceData);
+
+        myAnimator.SetTrigger("draw");
+    }
+
+
+    /// <summary>
+    /// Is the soldier in melee range from location?
+    /// </summary>
+    public bool IsInMeleeRange(Vector3 location)
+    {
+        return Vector3.Distance(transform.position, location) < MELEE_RANGE;
+    }
+
+
+    /// <summary>
+    /// Is the soldier in melee range from location?
+    /// </summary>
+    public bool IsInWeaponRange(Vector3 location)
+    {
+        if(primaryDevice)
+        {
+            return Vector3.Distance(transform.position, location) < primaryDevice.Range;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Sets the destination of navAgent.
+    /// </summary>
+    public void SetDestination(Vector3 destination)
+    {
+        // We need to mark the soldier as moving. (needed in update).
+        isMoving = true;
+
+        forceRotation = true;
+
+        targetRot = GetTargetRotation(destination);
+        desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
+
+        // Notify nav agent and animator of new changes.
+        myAnimator.SetInteger("speed", AnimatorSpeed);
+        navAgent.SetDestination(destination);
+    }
+
+
+    /// <summary>
     /// Toggles between running and walking.
     /// </summary>
     public void ToggleRunWalk()
@@ -181,6 +251,18 @@ public class Soldier : Pawn
         if(isMoving)
         {
             myAnimator.SetInteger("speed", AnimatorSpeed);
+        }
+    }
+
+
+    /// <summary>
+    /// Implementation for receive damage.
+    /// </summary>
+    public void ReceiveDamage(float damage)
+    {
+        if(damage >= MAX_HEALTH)
+        {
+            Die();
         }
     }
 }

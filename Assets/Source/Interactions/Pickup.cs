@@ -27,6 +27,13 @@ public class Pickup : Actor, IPointerEnterHandler, IPointerExitHandler, IInterac
         content.name = itemData.shortName;
     }
 
+    public override void Tick(float deltaTime)
+    {
+        base.Tick(deltaTime);
+
+        pivot.transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
+    }
+
     public virtual void Interact(Controller controller)
     {
         Debug.LogFormat("Interacting with {0}", name);
@@ -41,10 +48,4 @@ public class Pickup : Actor, IPointerEnterHandler, IPointerExitHandler, IInterac
     {
         myLight.enabled = false;
     }
-
-    private void Update()
-    {
-        pivot.transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
-    }
-
 }

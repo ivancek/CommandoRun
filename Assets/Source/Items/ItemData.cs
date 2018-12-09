@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "ItemData", menuName = "Data/ItemData")]
+[CreateAssetMenu(fileName = "ItemData", menuName = "Data/ItemData", order = 1)]
 public class ItemData : ScriptableObject
 {
+    [Header("Item data")]
     /// <summary>
     /// Name to use for game objects when they are spawned (for easier debugging). E.g. Knife.
     /// </summary>
@@ -21,6 +22,17 @@ public class ItemData : ScriptableObject
     /// Short description. This is visible in the tooltip.
     /// </summary>
     public string description;
+
+    /// <summary>
+    /// Range at which it can be used
+    /// </summary>
+    public float range;
+
+
+    /// <summary>
+    /// Rate per second at which it can be used 
+    /// </summary>
+    public float rateOfFire;
 
 
     /// <summary>
