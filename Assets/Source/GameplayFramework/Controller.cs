@@ -39,6 +39,7 @@ public class Controller : Actor
     public void SetControlledPawn(Pawn pawnToControl)
     {
         controlledPawn = pawnToControl;
+        controlledPawn.SetController(this);
 
         NotifyPawnControlled(controlledPawn);
     }

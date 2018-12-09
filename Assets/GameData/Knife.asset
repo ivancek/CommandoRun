@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cafe104aacb6dd49b1e2a0e5c25594d, type: 3}
+  m_Name: Knife
+  m_EditorClassIdentifier: 
+  shortName: Knife
+  displayName: Standard Issue Knife
+  description: A single blow with this means death.
+  prefab: {fileID: 114959588647092752, guid: 9717106812885364199daa94754b5461, type: 2}
+  pickupPrefab: {fileID: 1555696788265532, guid: 68c4c3340df9d70458f1697c57df88c1,
+    type: 2}

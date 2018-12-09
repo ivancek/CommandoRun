@@ -20,14 +20,17 @@ public class Soldier : Pawn
     // Set in Inspector
     public NavMeshAgent navAgent;
     public Animator myAnimator;
+    public Transform weaponContainer;
 
 
     // Private Properties for easier code reading.
     private int AnimatorSpeed { get { return isRunning ? 2 : 1; } }
     private float NavAgentSpeed { get { return isRunning ? RUN_SPEED : WALK_SPEED; } }
     private bool DestinationReached { get { return Vector3.Distance(transform.position, navAgent.destination) <= navAgent.stoppingDistance; } }
-    
+
     // Private fields
+    private IInteractable queuedInteraction;
+    private EquipableDevice primaryDevice;
     private bool isRunning;
     private bool isMoving;
     private Quaternion targetRot;
@@ -45,6 +48,7 @@ public class Soldier : Pawn
             if (DestinationReached)
             {
                 myAnimator.SetInteger("speed", 0);
+                InteractWith(queuedInteraction);
                 isMoving = false;
             }
         }
@@ -73,6 +77,45 @@ public class Soldier : Pawn
     }
 
 
+    /// <summary>
+    /// Sets queued interaction. When Soldier is out of range, we use this to remember
+    /// what to do when he reaches the destination. Think walk to and use.
+    /// </summary>
+    /// <param name="interaction"></param>
+    public void SetQueuedInteraction(IInteractable interaction)
+    {
+        queuedInteraction = interaction;
+    }
+
+
+    /// <summary>
+    /// Interacts with interaction and clears it.
+    /// </summary>
+    /// <param name="interaction"></param>
+    public void InteractWith(IInteractable interaction)
+    {
+        if(interaction != null)
+        {
+            interaction.Interact(GetController());
+            SetQueuedInteraction(null);
+        }
+    }
+
+    /// <summary>
+    /// Sets the primary device by spawning it.
+    /// </summary>
+    /// <param name="device"></param>
+    public void EquipPrimary(EquipableDevice device)
+    {
+        primaryDevice = Instantiate(device, weaponContainer, false);
+
+        myAnimator.SetTrigger("draw");
+    }
+
+
+    /// <summary>
+    /// Is the soldier in melee range from location?
+    /// </summary>
     public bool IsInMeleeRange(Vector3 location)
     {
         return Vector3.Distance(transform.position, location) < MELEE_RANGE;

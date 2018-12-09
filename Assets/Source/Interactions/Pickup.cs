@@ -3,13 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Pickup : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IInteractable
+public class Pickup : Actor, IPointerEnterHandler, IPointerExitHandler, IInteractable
 {
+    [Header("Data")]
+    public ItemData itemData;
+
+    [Header("Setup")]
     public Transform pivot;
     public Light myLight;
     public float rotateSpeed;
 
-    public void Interact()
+
+    void Awake()
+    {
+        Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
+
+        GameObject content = Instantiate(itemData.pickupPrefab, pivot, false);
+        content.name = itemData.shortName;
+    }
+
+    public virtual void Interact(Controller controller)
     {
         Debug.LogFormat("Interacting with {0}", name);
     }

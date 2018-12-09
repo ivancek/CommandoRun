@@ -53,26 +53,26 @@ public class HumanController : PlayerController
         if(Physics.Raycast(ray, out outHit))
         {
             IInteractable interaction = outHit.transform.GetComponent<IInteractable>();
+            soldier.SetQueuedInteraction(interaction);
 
-            if(interaction != null)
+            if (interaction != null)
             {
                 if(soldier.IsInMeleeRange(outHit.transform.position))
                 {
-                    interaction.Interact();
+                    soldier.InteractWith(interaction);
                 }
                 else
                 {
                     soldier.SetDestination(outHit.transform.position);
                 }
-
-                return;
             }
 
             if(outHit.transform.GetComponent<NavigationSurface>())
             {
                 soldier.SetDestination(outHit.point);
-                return;
             }
+
+            
         }
     }
 }
