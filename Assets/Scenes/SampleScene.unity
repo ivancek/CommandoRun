@@ -1534,7 +1534,8 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -90.00001
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 64347316346097652, guid: e129e60cf32107d4d93ed950b970343b, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: e129e60cf32107d4d93ed950b970343b, type: 2}
   m_IsPrefabAsset: 0
 --- !u!4 &627998851 stripped
@@ -1947,7 +1948,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4757482029221870, guid: 4eea09b09a380f940b6e580e00b8958a, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 195952518095855820, guid: 4eea09b09a380f940b6e580e00b8958a,
         type: 2}
@@ -3073,6 +3074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815cdfc5f8c9e394c8a7d9542ce6b1d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTick: 1
 --- !u!1001 &1746754842
 Prefab:
   m_ObjectHideFlags: 0
@@ -3561,7 +3563,7 @@ Transform:
   - {fileID: 1253248068}
   - {fileID: 1826801379}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2042884131
 Prefab:

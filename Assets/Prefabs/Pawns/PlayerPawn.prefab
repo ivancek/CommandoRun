@@ -1592,6 +1592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c27247a5fb52e4eb4e0512de70bdb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTick: 1
   MELEE_RANGE: 2
   RUN_SPEED: 4.8
   WALK_SPEED: 1.4
@@ -1599,6 +1600,7 @@ MonoBehaviour:
   MAX_ROT_SPEED: 400
   MAX_HEALTH: 100
   navAgent: {fileID: 195952518095855820}
+  capsCollider: {fileID: 136976106426375144}
   myAnimator: {fileID: 95032068585856566}
   weaponContainer: {fileID: 4130698799505590}
 --- !u!136 &136976106426375144
@@ -1610,7 +1612,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.4
+  m_Radius: 0.7
   m_Height: 2.6
   m_Direction: 1
   m_Center: {x: 0, y: 1.3, z: 0}
@@ -2925,7 +2927,7 @@ NavMeshAgent:
   m_Acceleration: 24
   avoidancePriority: 50
   m_AngularSpeed: 900
-  m_StoppingDistance: 1.5
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1

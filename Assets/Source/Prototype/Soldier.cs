@@ -21,6 +21,7 @@ public class Soldier : Pawn, IDamageReceiver
 
     // Set in Inspector
     public NavMeshAgent navAgent;
+    public CapsuleCollider capsCollider;
     public Animator myAnimator;
     public Transform weaponContainer;
 
@@ -119,6 +120,7 @@ public class Soldier : Pawn, IDamageReceiver
     {
         int randomInt = UnityEngine.Random.Range(1, 6);
         navAgent.enabled = false;
+        capsCollider.enabled = false;
         myAnimator.Play(string.Format("Death{0}", randomInt));
     }
 
