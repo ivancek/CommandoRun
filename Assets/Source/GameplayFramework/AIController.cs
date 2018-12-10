@@ -34,7 +34,7 @@ public class AIController : Controller
 
         if(playerPawn)
         {
-            mySoldier.LookAtTweened(playerPawn.transform.position);
+            mySoldier.LookAtInstant(playerPawn.transform.position);
         }
     }
 

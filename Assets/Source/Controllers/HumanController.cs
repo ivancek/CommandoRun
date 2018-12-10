@@ -70,7 +70,7 @@ public class HumanController : PlayerController
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit outHit;
 
-        // Set mask to ignore layer 11 (player) 
+        // Set mask to ignore layer 11 & 12 (player & melee weapon) 
         int layerMask = 1 << 11;
         layerMask |= 1 << 12;
         layerMask = ~layerMask;

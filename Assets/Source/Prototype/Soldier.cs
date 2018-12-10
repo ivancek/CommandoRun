@@ -125,6 +125,16 @@ public class Soldier : Pawn, IDamageReceiver
 
 
     /// <summary>
+    /// Sets force rotation to true, gets target rotation and desired rotation speed.
+    /// This in turn uses Tick to quickly rotate, i.e. override navAgent's auto rotation.
+    /// </summary>
+    public void LookAtInstant(Vector3 position)
+    {
+        transform.rotation = GetTargetRotation(position);
+    }
+
+
+    /// <summary>
     /// Calculates the desired rotation speed (angle percent) based of min and max rotation speed.
     /// </summary>
     private float GetDesiredRotationSpeed(Quaternion targetRotation)
@@ -230,7 +240,7 @@ public class Soldier : Pawn, IDamageReceiver
     {
         if(target != null && PrimaryDevice)
         {
-            LookAtTweened(target.Transform.position);
+            LookAtInstant(target.Transform.position);
             PrimaryDevice.Use(myAnimator);
             SetQueuedTarget(null);
         }
