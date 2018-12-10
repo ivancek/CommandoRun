@@ -48,4 +48,7 @@ public class ItemData : ScriptableObject
     /// can place/rotate it properly to look nice when appearing as a pickup.
     /// </summary>
     public GameObject pickupPrefab;
+
+    public AudioClip equipSound;
+    public AudioClip useSound;
 }

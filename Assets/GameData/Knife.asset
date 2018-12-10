@@ -19,4 +19,6 @@ MonoBehaviour:
   prefab: {fileID: 114959588647092752, guid: 9717106812885364199daa94754b5461, type: 2}
   pickupPrefab: {fileID: 1555696788265532, guid: 68c4c3340df9d70458f1697c57df88c1,
     type: 2}
+  equipSound: {fileID: 8300000, guid: 69889ce9c7fc47d4caa9b808997b537b, type: 3}
+  useSound: {fileID: 8300000, guid: 96caf3bdf898797429ba151a3035330c, type: 3}
   damage: 100

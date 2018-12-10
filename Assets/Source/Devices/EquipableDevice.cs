@@ -6,12 +6,14 @@ public class EquipableDevice : Actor
 {
     [Header("Setup")]
     public RuntimeAnimatorController animatorController;
-
+    public AudioSource audioSource;
 
     public float Range { get; private set; }
     
     public float RateOfFire { get; private set; }
 
+    private AudioClip equipSound;
+    private AudioClip useSound;
     private float lastTimeUsed;
 
     /// <summary>
@@ -38,6 +40,19 @@ public class EquipableDevice : Actor
     {
         Range = data.range;
         RateOfFire = data.rateOfFire;
+        equipSound = data.equipSound;
+        useSound = data.useSound;
     }
 
+    public void PlayEquipSound()
+    {
+        audioSource.clip = equipSound;
+        audioSource.Play();
+    }
+
+    public void PlayUseSound()
+    {
+        audioSource.clip = useSound;
+        audioSource.Play();
+    }
 }

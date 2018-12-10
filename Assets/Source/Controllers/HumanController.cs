@@ -8,6 +8,25 @@ using UnityEngine;
 /// </summary>
 public class HumanController : PlayerController
 {
+    [Header("Setup")]
+    /// <summary>
+    /// What distance should the pawn stop at when attacking
+    /// </summary>
+    public float attackStopDistance;
+    
+    /// <summary>
+    /// What distance should the pawn stop at when moving
+    /// </summary>
+    public float moveStopDistance;
+
+    /// <summary>
+    /// What distance should the pawn stop at when interacting with objects
+    /// </summary>
+    public float useStopDistance;
+
+
+
+    
     private Soldier soldier;
     
     
@@ -88,7 +107,7 @@ public class HumanController : PlayerController
         }
         else
         {
-            soldier.SetDestination(outHit.transform.position);
+            soldier.SetDestination(outHit.transform.position, attackStopDistance);
         }
 
         return true;
@@ -115,7 +134,7 @@ public class HumanController : PlayerController
         }
         else
         {
-            soldier.SetDestination(outHit.transform.position);
+            soldier.SetDestination(outHit.transform.position, useStopDistance);
         }
 
         return true;
@@ -129,7 +148,7 @@ public class HumanController : PlayerController
     {
         if (outHit.transform.GetComponent<NavigationSurface>())
         {
-            soldier.SetDestination(outHit.point);
+            soldier.SetDestination(outHit.point, moveStopDistance);
             return true;
         }
 

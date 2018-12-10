@@ -25,6 +25,8 @@ public class Soldier : Pawn, IDamageReceiver
     public Animator myAnimator;
     public Transform weaponContainer;
 
+    // public Properties
+    public EquipableDevice PrimaryDevice { get; protected set; } 
 
     // Private Properties for easier code reading.
     private int AnimatorSpeed { get { return isRunning ? 2 : 1; } }
@@ -35,7 +37,6 @@ public class Soldier : Pawn, IDamageReceiver
     private IInteractable queuedInteraction;
     private IDamageReceiver queuedTarget;
 
-    private EquipableDevice primaryDevice;
     private Quaternion targetRot;
 
     private bool isRunning;
@@ -176,9 +177,9 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     public void Attack(IDamageReceiver target)
     {
-        if(target != null && primaryDevice)
+        if(target != null && PrimaryDevice)
         {
-            primaryDevice.Use(myAnimator);
+            PrimaryDevice.Use(myAnimator);
             SetQueuedTarget(null);
         }
     }
@@ -189,8 +190,11 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     public void EquipPrimary(ItemData deviceData)
     {
-        primaryDevice = Instantiate(deviceData.prefab, weaponContainer, false);
-        primaryDevice.SetData(deviceData);
+        PrimaryDevice = Instantiate(deviceData.prefab, weaponContainer, false);
+        PrimaryDevice.SetData(deviceData);
+        PrimaryDevice.gameObject.SetActive(false);
+
+        
 
         myAnimator.SetTrigger("draw");
     }
@@ -210,9 +214,9 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     public bool IsInWeaponRange(Vector3 location)
     {
-        if(primaryDevice)
+        if(PrimaryDevice)
         {
-            return Vector3.Distance(transform.position, location) < primaryDevice.Range;
+            return Vector3.Distance(transform.position, location) < PrimaryDevice.Range;
         }
 
         return false;
@@ -221,7 +225,7 @@ public class Soldier : Pawn, IDamageReceiver
     /// <summary>
     /// Sets the destination of navAgent.
     /// </summary>
-    public void SetDestination(Vector3 destination)
+    public void SetDestination(Vector3 destination, float stoppingDistance)
     {
         // We need to mark the soldier as moving. (needed in update).
         isMoving = true;
@@ -233,6 +237,8 @@ public class Soldier : Pawn, IDamageReceiver
 
         // Notify nav agent and animator of new changes.
         myAnimator.SetInteger("speed", AnimatorSpeed);
+
+        navAgent.stoppingDistance = stoppingDistance;
         navAgent.SetDestination(destination);
     }
 

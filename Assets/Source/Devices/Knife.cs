@@ -24,6 +24,7 @@ public class Knife : EquipableDevice
         {
             target.ReceiveDamage(Damage);
             isAttacking = false;
+            PlayUseSound();
         }
     }
 
