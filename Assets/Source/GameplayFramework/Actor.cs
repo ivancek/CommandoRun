@@ -10,9 +10,25 @@ public class Actor : MonoBehaviour
     [Header("Actor")]
     // Set this to true if you are overriding Tick(), otherwise it wont tick :)
     public bool canTick = true;
+    // Should this actor init itself on gameObject awake?
+    public bool initOnAwake = true;
+
 
     /// <summary>
-    /// MonoBehaviour update. It runs the Tick function, allowing easier Update overriding 
+    /// MonoBehaviour awake. It runs the Init function, allowing easier Awake overriding.
+    /// </summary>
+    private void Awake()
+    {
+        if(initOnAwake)
+        {
+            Init();
+        }
+    }
+
+
+    /// <summary>
+    /// MonoBehaviour update. It runs the Tick function, allowing easier Update overriding.
+    /// Add code to Tick, not Update.
     /// </summary>
     private void Update()
     {
@@ -25,10 +41,10 @@ public class Actor : MonoBehaviour
     /// <summary>
     /// Initializes the Actor
     /// </summary>
-    public virtual void Init()
-    {
-        Debug.LogFormat("{0} initialized.", name);
-    }
+    public virtual void Init() { }
 
+    /// <summary>
+    /// Use this to update the actor every frame.
+    /// </summary>
     public virtual void Tick(float deltaTime) { }
 }

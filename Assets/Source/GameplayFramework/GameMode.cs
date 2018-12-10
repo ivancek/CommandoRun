@@ -26,7 +26,6 @@ public class GameMode : Actor
 
         // We need the controller to control the game.
         PlayerController pController = Instantiate(defaultController, Vector3.zero, Quaternion.identity, transform);
-        pController.Init();
 
         // If there's a pawn defined, spawn it.
         if(defaultPawn)
@@ -38,7 +37,6 @@ public class GameMode : Actor
             {
                 // Once we have the playerStart, spawn and init the pawn.
                 pawnInstance = Instantiate(defaultPawn, pStart.transform.position, pStart.transform.rotation);
-                pawnInstance.Init();
 
                 // In order to control the pawn, the playerController must control it.
                 pController.SetControlledPawn(pawnInstance);

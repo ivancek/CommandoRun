@@ -51,6 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 121c0ff772bdef54c861dbedf7af4996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTick: 1
+  initOnAwake: 0
   defaultController: {fileID: 114972055146341434, guid: 2f43cfa4d58492a4bb9a8456d4453db8,
     type: 2}
   defaultPawn: {fileID: 114244687584567736, guid: 4eea09b09a380f940b6e580e00b8958a,

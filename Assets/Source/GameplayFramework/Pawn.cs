@@ -7,6 +7,10 @@ using UnityEngine;
 /// </summary>
 public class Pawn : Actor
 {
+    [Header("Pawn")]
+    public AIController AIControllerPrefab;
+
+
     /// <summary>
     /// Controller responsible for this pawn.
     /// </summary>
@@ -19,6 +23,14 @@ public class Pawn : Actor
     public override void Init()
     {
         base.Init();
+
+        // Pawns placed in the world by hand or spawned from specific prefab should have aiControllerPefab defined.
+        // Therefore, instantiate the controller as child of this pawn and give control to the controller.
+        // Doing this will trigger NotifyPawnControlled() which you can override in your own aiController implementations.
+        if (AIControllerPrefab)
+        {
+            Instantiate(AIControllerPrefab, transform, false).SetControlledPawn(this);
+        }
     }
 
 

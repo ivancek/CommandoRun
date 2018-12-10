@@ -29,6 +29,8 @@ public class Soldier : Pawn, IDamageReceiver
 
     // public Properties
     public EquipableDevice PrimaryDevice { get; protected set; } 
+    public Transform Transform { get { return transform; } }
+
 
     // Private Properties for easier code reading.
     private int AnimatorSpeed { get { return isRunning ? 2 : 1; } }
@@ -87,6 +89,19 @@ public class Soldier : Pawn, IDamageReceiver
         }
 
         forceRotation = false;
+    }
+
+
+    /// <summary>
+    /// Sets force rotation to true, gets target rotation and desired rotation speed.
+    /// This in turn uses Tick to quickly rotate, i.e. override navAgent's auto rotation.
+    /// </summary>
+    private void RotateQuickly(Vector3 destination)
+    {
+        forceRotation = true;
+
+        targetRot = GetTargetRotation(destination);
+        desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
     }
 
 
@@ -181,6 +196,7 @@ public class Soldier : Pawn, IDamageReceiver
     {
         if(target != null && PrimaryDevice)
         {
+            RotateQuickly(target.Transform.position);
             PrimaryDevice.Use(myAnimator);
             SetQueuedTarget(null);
         }
@@ -218,7 +234,8 @@ public class Soldier : Pawn, IDamageReceiver
     {
         if(PrimaryDevice)
         {
-            return Vector3.Distance(transform.position, location) < PrimaryDevice.Range;
+            float distance = Vector3.Distance(transform.position, location);
+            return distance < PrimaryDevice.Range;
         }
 
         return false;
@@ -232,10 +249,8 @@ public class Soldier : Pawn, IDamageReceiver
         // We need to mark the soldier as moving. (needed in update).
         isMoving = true;
 
-        forceRotation = true;
-
-        targetRot = GetTargetRotation(destination);
-        desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
+        // Request quick rotation. 
+        RotateQuickly(destination);
 
         // Notify nav agent and animator of new changes.
         myAnimator.SetInteger("speed", AnimatorSpeed);
