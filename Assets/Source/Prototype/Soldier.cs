@@ -24,6 +24,8 @@ public class Soldier : Pawn, IDamageReceiver
     public CapsuleCollider capsCollider;
     public Animator myAnimator;
     public Transform weaponContainer;
+    public AudioSource audioSource;
+    public AudioClip[] hurtSounds;
 
     // public Properties
     public EquipableDevice PrimaryDevice { get; protected set; } 
@@ -268,6 +270,13 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     public void ReceiveDamage(float damage)
     {
+        if(!audioSource.isPlaying)
+        {
+            int randomInt = UnityEngine.Random.Range(0, hurtSounds.Length);
+            audioSource.clip = hurtSounds[randomInt];
+            audioSource.Play();
+        }
+
         if(damage >= MAX_HEALTH)
         {
             Die();
