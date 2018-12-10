@@ -42,8 +42,6 @@ public class Knife : EquipableDevice
         {
             animator.SetTrigger("attack");
             isAttacking = true;
-
-            Debug.Log("Knife used!");
         }
 
         base.Use(animator);
