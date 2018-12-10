@@ -17,7 +17,7 @@ public class Actor : MonoBehaviour
     /// <summary>
     /// MonoBehaviour awake. It runs the Init function, allowing easier Awake overriding.
     /// </summary>
-    private void Awake()
+    private void Start()
     {
         if(initOnAwake)
         {

@@ -12,6 +12,7 @@ public class GameMode : Actor
     public PlayerController defaultController;
     public Pawn defaultPawn;
 
+    public Pawn PlayerPawn { get { return pawnInstance; } }
 
     protected Pawn pawnInstance;
 

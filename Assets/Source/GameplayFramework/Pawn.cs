@@ -43,6 +43,9 @@ public class Pawn : Actor
     }
 
 
+    /// <summary>
+    /// REturns the current controller for this pawn. Can be null.
+    /// </summary>
     public Controller GetController()
     {
         return myController;

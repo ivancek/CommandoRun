@@ -779,6 +779,7 @@ GameObject:
   - component: {fileID: 4757482029221870}
   - component: {fileID: 114244687584567736}
   - component: {fileID: 136976106426375144}
+  - component: {fileID: 114917737801188246}
   - component: {fileID: 54678473580930398}
   - component: {fileID: 95032068585856566}
   - component: {fileID: 195952518095855820}
@@ -1699,6 +1700,7 @@ MonoBehaviour:
   MAX_HEALTH: 100
   navAgent: {fileID: 195952518095855820}
   capsCollider: {fileID: 136976106426375144}
+  noiseEmitter: {fileID: 114917737801188246}
   myAnimator: {fileID: 95032068585856566}
   weaponContainer: {fileID: 4130698799505590}
   audioSource: {fileID: 82547946178290606}
@@ -1706,6 +1708,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 685b65d9f8010f94193ff16bada4cde9, type: 3}
   - {fileID: 8300000, guid: c24d19e54ac0650408513451ada520d0, type: 3}
   - {fileID: 8300000, guid: a11ed1613e55dc54f99d163bc848711f, type: 3}
+--- !u!114 &114917737801188246
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1981960619317264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 738b52ae3bc6fcd4fa438519d5ad73a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136976106426375144
 CapsuleCollider:
   m_ObjectHideFlags: 1

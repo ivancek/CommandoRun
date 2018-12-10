@@ -9,14 +9,20 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class GameInstance : MonoBehaviour
 {
+    private static GameInstance instance;
+
+    public static GameMode GameMode { get { return instance.currentGameMode; } }
+
+
     private GameMode currentGameMode;
-
-
+    
+    
     /// <summary>
     /// MonoBehaviour Awake
     /// </summary>
     private void Awake()
     {
+        instance = this;
         SceneManager.sceneLoaded += SceneLoaded;
     }
 

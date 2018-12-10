@@ -5,54 +5,61 @@ using UnityEngine;
 
 public class GuardController : AIController
 {
-    private Pawn playerPawn;
     private Soldier mySoldier;
+    private Soldier playerSoldier;
     private PerceptionComponent soldierPerception;
+
 
     public override void NotifyPawnControlled(Pawn controlledPawn)
     {
         base.NotifyPawnControlled(controlledPawn);
 
+        // Cache a reference to player's soldier
+        playerSoldier = (Soldier)GameInstance.GameMode.PlayerPawn;
+
         // This controller is specific for the soldier. Cast.
         mySoldier = (Soldier)controlledPawn;
         mySoldier.gameObject.layer = 0;
         soldierPerception = mySoldier.gameObject.AddComponent<PerceptionComponent>();
-
+        
         // Event subscriptions
         mySoldier.OnDeath += HandleSoldierDeath;
-        soldierPerception.OnPlayerSensed += SetPlayerPawn;
-        soldierPerception.OnPlayerLost += ClearPlayerPawn;
+        soldierPerception.OnPlayerSensed += PlayerSensed;
     }
 
-
-    public override void Tick(float deltaTime)
+    private void PlayerSensed(bool isSensed)
     {
-        base.Tick(deltaTime);
-
-        if (playerPawn)
+        if(isSensed)
         {
-            mySoldier.LookAtTweened(playerPawn.transform.position);
+            if(playerSoldier.noiseEmitter.IsEmitingNoise)
+            {
+                KeepAttention();
+            }
+        }
+        else
+        {
+            LoseAttention();
         }
     }
 
-
+    
     private void HandleSoldierDeath()
     {
-        soldierPerception.OnPlayerSensed -= SetPlayerPawn;
-        soldierPerception.OnPlayerLost -= ClearPlayerPawn;
+        mySoldier.OnDeath -= HandleSoldierDeath;
+        soldierPerception.OnPlayerSensed -= PlayerSensed;
+    }
+
+    private void KeepAttention()
+    {
+        Vector3 targetPos = playerSoldier.transform.position;
+        Debug.DrawLine(new Vector3(transform.position.x, 2.3f, transform.position.z), targetPos, Color.red);
+
+        mySoldier.LookAtTweened(targetPos);
     }
 
 
-    private void ClearPlayerPawn()
+    private void LoseAttention()
     {
-        SetPlayerPawn(null);
         mySoldier.ResetRotation();
     }
-
-
-    private void SetPlayerPawn(Pawn obj)
-    {
-        playerPawn = obj;
-    }
-        
 }

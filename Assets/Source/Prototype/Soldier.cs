@@ -22,11 +22,11 @@ public class Soldier : Pawn, IDamageReceiver
     // Set in Inspector
     public NavMeshAgent navAgent;
     public CapsuleCollider capsCollider;
+    public NoiseEmitter noiseEmitter;
     public Animator myAnimator;
     public Transform weaponContainer;
     public AudioSource audioSource;
     public AudioClip[] hurtSounds;
-
 
     // Events
     public System.Action OnDeath;
@@ -71,18 +71,28 @@ public class Soldier : Pawn, IDamageReceiver
     {
         base.Tick(deltaTime);
 
-        RotateTowardsTargetRotation(targetRot);
     
         if (!navAgent.isStopped)
         {
+            SetTargetRotation(navAgent.desiredVelocity);
+
             if (DestinationReached)
             {
-                myAnimator.SetInteger("speed", 0);
-                Attack(queuedTarget);
-                InteractWith(queuedInteraction);
-                navAgent.isStopped = true;
+                StopMoving();
             }
         }
+
+
+        RotateTowardsTargetRotation(targetRot);
+    }
+
+    private void StopMoving()
+    {
+        myAnimator.SetInteger("speed", 0);
+        Attack(queuedTarget);
+        InteractWith(queuedInteraction);
+        navAgent.isStopped = true;
+        noiseEmitter.SetEmittingNoise(false);
     }
 
 
@@ -293,13 +303,12 @@ public class Soldier : Pawn, IDamageReceiver
         // Let the nav agent move again.
         navAgent.isStopped = false;
 
-        // Notify nav agent and animator of new changes.
         myAnimator.SetInteger("speed", AnimatorSpeed);
 
         navAgent.stoppingDistance = stoppingDistance;
         navAgent.SetDestination(destination);
 
-        SetTargetRotation(navAgent.desiredVelocity);
+        noiseEmitter.SetEmittingNoise(isRunning);
     }
 
 
@@ -311,13 +320,13 @@ public class Soldier : Pawn, IDamageReceiver
         // Toggle the running state.
         isRunning = !isRunning;
 
-        // Set the new speed to the nav agent.
         navAgent.speed = NavAgentSpeed;
 
         // When toggling speed while moving, we need to update the animator speed parameter as well.
         // Otherwise, we would change moving speed, but animation would stay the same.
         if(!navAgent.isStopped)
         {
+            noiseEmitter.SetEmittingNoise(isRunning);
             myAnimator.SetInteger("speed", AnimatorSpeed);
         }
     }

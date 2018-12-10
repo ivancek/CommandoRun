@@ -7,50 +7,22 @@ using UnityEngine;
 /// </summary>
 public class PerceptionComponent : MonoBehaviour
 {
-    public float range = 2;
+    public float range = 10;
+    
+    /// <summary>
+    /// Triggered when player is in range. This is coming from an update, so treat is as such.
+    /// </summary>
+    public System.Action<bool> OnPlayerSensed;
 
-    public System.Action<Pawn> OnPlayerSensed;
-    public System.Action OnPlayerLost;
-
-    private RaycastHit hit;
-    private Collider[] result;
-    private bool shouldNotifySense = true; 
-    private bool shouldNotifyLost = true;
+    private bool IsPlayerInRange { get { return Vector3.Distance(GameInstance.GameMode.PlayerPawn.transform.position, transform.position) < range; } }
 
     private void Update()
     {
-        int layerMask = 1 << 11;
-        result = Physics.OverlapSphere(transform.position, range, layerMask, QueryTriggerInteraction.Collide);
-        
-        // The frame player enters, result will be 1
-        if(result.Length > 0)
+        if(OnPlayerSensed != null)
         {
-            // Prevent multiple event calls.
-            if (shouldNotifySense) 
-            {
-                shouldNotifySense = false;
-                shouldNotifyLost = true;
-
-                if (OnPlayerSensed != null)
-                {
-                    OnPlayerSensed.Invoke(result[0].GetComponent<Pawn>());
-                }
-                
-            }
-        }
-        else
-        {
-            // Prevent multiple event calls.
-            if (shouldNotifyLost) 
-            {
-                shouldNotifySense = true;
-                shouldNotifyLost = false;
-
-                if(OnPlayerLost != null)
-                {
-                    OnPlayerLost.Invoke();
-                }
-            }
+            OnPlayerSensed(IsPlayerInRange);
         }
     }
+
+
 }
