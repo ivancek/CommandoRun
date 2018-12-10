@@ -10,7 +10,7 @@ public class PerceptionComponent : MonoBehaviour
     public float range = 2;
 
     public System.Action<Pawn> OnPlayerSensed;
-    public System.Action<Pawn> OnPlayerLost;
+    public System.Action OnPlayerLost;
 
     private RaycastHit hit;
     private Collider[] result;
@@ -28,16 +28,14 @@ public class PerceptionComponent : MonoBehaviour
             // Prevent multiple event calls.
             if (shouldNotifySense) 
             {
-                for(int i = 0; i < result.Length; i++)
-                {
-                    shouldNotifySense = false;
-                    shouldNotifyLost = true;
+                shouldNotifySense = false;
+                shouldNotifyLost = true;
 
-                    if (OnPlayerSensed != null)
-                    {
-                        OnPlayerSensed.Invoke(result[i].GetComponent<Pawn>());
-                    }
+                if (OnPlayerSensed != null)
+                {
+                    OnPlayerSensed.Invoke(result[0].GetComponent<Pawn>());
                 }
+                
             }
         }
         else
@@ -50,7 +48,7 @@ public class PerceptionComponent : MonoBehaviour
 
                 if(OnPlayerLost != null)
                 {
-                    OnPlayerLost.Invoke(null);
+                    OnPlayerLost.Invoke();
                 }
             }
         }

@@ -97,7 +97,6 @@ public class Soldier : Pawn, IDamageReceiver
         {
             var step = desiredRotationSpeed * Time.deltaTime;
             transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, step);
-            return;
         }
     }
 

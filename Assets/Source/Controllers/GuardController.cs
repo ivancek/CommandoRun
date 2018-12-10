@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public class GuardController : AIController
         // Event subscriptions
         mySoldier.OnDeath += HandleSoldierDeath;
         soldierPerception.OnPlayerSensed += SetPlayerPawn;
-        soldierPerception.OnPlayerLost += SetPlayerPawn;
+        soldierPerception.OnPlayerLost += ClearPlayerPawn;
     }
 
 
@@ -38,19 +39,20 @@ public class GuardController : AIController
     private void HandleSoldierDeath()
     {
         soldierPerception.OnPlayerSensed -= SetPlayerPawn;
-        soldierPerception.OnPlayerLost -= SetPlayerPawn;
+        soldierPerception.OnPlayerLost -= ClearPlayerPawn;
+    }
 
+
+    private void ClearPlayerPawn()
+    {
         SetPlayerPawn(null);
+        mySoldier.ResetRotation();
     }
 
 
     private void SetPlayerPawn(Pawn obj)
     {
         playerPawn = obj;
-
-        if (!playerPawn)
-        {
-            mySoldier.ResetRotation();
-        }
     }
+        
 }
