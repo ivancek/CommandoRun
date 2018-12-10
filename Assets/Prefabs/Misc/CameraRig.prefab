@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4118492741573856}
   - component: {fileID: 20180411211530464}
-  - component: {fileID: 81724001291727668}
   - component: {fileID: 114263574951311260}
   - component: {fileID: 114538890760238756}
   - component: {fileID: 114332862227465596}
@@ -43,6 +42,22 @@ GameObject:
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: -1500306622, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1521878472658002
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4716496401529958}
+  - component: {fileID: 81320447038352234}
+  m_Layer: 8
+  m_Name: AudioListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -85,12 +100,26 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1150666695122798}
   m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
-  m_LocalPosition: {x: 0, y: 20.4, z: -9.96}
+  m_LocalPosition: {x: 0, y: 21, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4716496401529958}
   m_Father: {fileID: 4087728822204040}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 55, y: 0, z: 0}
+--- !u!4 &4716496401529958
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1521878472658002}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 20.85}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4118492741573856}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4776852191683398
 Transform:
   m_ObjectHideFlags: 1
@@ -160,12 +189,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!81 &81724001291727668
+--- !u!81 &81320447038352234
 AudioListener:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1150666695122798}
+  m_GameObject: {fileID: 1521878472658002}
   m_Enabled: 1
 --- !u!114 &114263574951311260
 MonoBehaviour:

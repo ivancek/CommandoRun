@@ -25,8 +25,6 @@ public class HumanController : PlayerController
     public float useStopDistance;
 
 
-
-    
     private Soldier soldier;
     
     
@@ -72,11 +70,13 @@ public class HumanController : PlayerController
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit outHit;
 
-        if (Physics.Raycast(ray, out outHit))
-        {
-            // Early exit if we hit ourselves.
-            if(outHit.collider.gameObject == GetControlledPawn().gameObject) { return; }
+        // Set mask to ignore layer 11 (player) 
+        int layerMask = 1 << 11;
+        layerMask |= 1 << 12;
+        layerMask = ~layerMask;
 
+        if (Physics.Raycast(ray, out outHit, 100, layerMask, QueryTriggerInteraction.Collide))
+        {
             if (HandleAttack(outHit)) return;
             if (HandleInteraction(outHit)) return;
             if (HandleNavigation(outHit)) return;

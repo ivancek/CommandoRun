@@ -27,6 +27,11 @@ public class Soldier : Pawn, IDamageReceiver
     public AudioSource audioSource;
     public AudioClip[] hurtSounds;
 
+
+    // Events
+    public System.Action OnDeath;
+
+
     // public Properties
     public EquipableDevice PrimaryDevice { get; protected set; } 
     public Transform Transform { get { return transform; } }
@@ -37,16 +42,30 @@ public class Soldier : Pawn, IDamageReceiver
     private float NavAgentSpeed { get { return isRunning ? RUN_SPEED : WALK_SPEED; } }
     private bool DestinationReached { get { return Vector3.Distance(transform.position, navAgent.destination) <= navAgent.stoppingDistance; } }
 
+
     // Private fields
     private IInteractable queuedInteraction;
     private IDamageReceiver queuedTarget;
-
     private Quaternion targetRot;
-
+    private Quaternion defaultRot;
     private bool isRunning;
     private bool isMoving;
     private bool forceRotation;
     private float desiredRotationSpeed;
+
+    
+    
+    /// <summary>
+    /// MonoBehaviour Awake
+    /// </summary>
+    public override void Init()
+    {
+        base.Init();
+
+        navAgent.speed = WALK_SPEED;
+        defaultRot = transform.rotation;
+    }
+
 
     /// <summary>
     /// Actor Tick.
@@ -96,11 +115,11 @@ public class Soldier : Pawn, IDamageReceiver
     /// Sets force rotation to true, gets target rotation and desired rotation speed.
     /// This in turn uses Tick to quickly rotate, i.e. override navAgent's auto rotation.
     /// </summary>
-    private void RotateQuickly(Vector3 destination)
+    public void LookAtTweened(Vector3 position)
     {
         forceRotation = true;
 
-        targetRot = GetTargetRotation(destination);
+        targetRot = GetTargetRotation(position);
         desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
     }
 
@@ -118,6 +137,25 @@ public class Soldier : Pawn, IDamageReceiver
         float desiredSpeed = MIN_ROT_SPEED + MAX_ROT_SPEED * percent;
 
         return desiredSpeed;
+    }
+
+    
+    /// <summary>
+    /// Resets the rotation back to the rotation Soldier had on BeginPlay
+    /// </summary>
+    public void ResetRotation()
+    {
+        SetTargetRotation(defaultRot);
+    }
+
+
+    /// <summary>
+    /// Sets target rotation
+    /// </summary>
+    public void SetTargetRotation(Quaternion rotation)
+    {
+        targetRot = rotation;
+        desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
     }
 
 
@@ -140,17 +178,13 @@ public class Soldier : Pawn, IDamageReceiver
         navAgent.enabled = false;
         capsCollider.enabled = false;
         myAnimator.Play(string.Format("Death{0}", randomInt));
-    }
 
 
-    /// <summary>
-    /// MonoBehaviour Awake
-    /// </summary>
-    public override void Init()
-    {
-        base.Init();
-
-        navAgent.speed = WALK_SPEED;
+        // After everything is done for death, we must invoke death event.
+        if(OnDeath != null)
+        {
+            OnDeath.Invoke();
+        }
     }
 
 
@@ -196,7 +230,7 @@ public class Soldier : Pawn, IDamageReceiver
     {
         if(target != null && PrimaryDevice)
         {
-            RotateQuickly(target.Transform.position);
+            LookAtTweened(target.Transform.position);
             PrimaryDevice.Use(myAnimator);
             SetQueuedTarget(null);
         }
@@ -250,7 +284,7 @@ public class Soldier : Pawn, IDamageReceiver
         isMoving = true;
 
         // Request quick rotation. 
-        RotateQuickly(destination);
+        LookAtTweened(destination);
 
         // Notify nav agent and animator of new changes.
         myAnimator.SetInteger("speed", AnimatorSpeed);

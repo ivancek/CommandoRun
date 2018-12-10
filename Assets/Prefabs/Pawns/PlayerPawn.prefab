@@ -783,7 +783,7 @@ GameObject:
   - component: {fileID: 95032068585856566}
   - component: {fileID: 195952518095855820}
   - component: {fileID: 82547946178290606}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PlayerPawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1619,7 +1619,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1689,6 +1689,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canTick: 1
+  initOnAwake: 1
+  AIControllerPrefab: {fileID: 0}
   MELEE_RANGE: 2
   RUN_SPEED: 4.8
   WALK_SPEED: 1.4
