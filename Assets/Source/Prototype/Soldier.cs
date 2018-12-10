@@ -240,6 +240,9 @@ public class Soldier : Pawn, IDamageReceiver
     {
         if(target != null && PrimaryDevice)
         {
+            navAgent.isStopped = true;
+            myAnimator.SetInteger("speed", 0);
+
             LookAtInstant(target.Transform.position);
             PrimaryDevice.Use(myAnimator);
             SetQueuedTarget(null);
@@ -290,6 +293,9 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     public void SetDestination(Vector3 destination, float stoppingDistance)
     {
+        // Let the nav agent move again.
+        navAgent.isStopped = false;
+
         // We need to mark the soldier as moving. (needed in update).
         isMoving = true;
 
