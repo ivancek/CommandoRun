@@ -259,8 +259,6 @@ public class Soldier : Pawn, IDamageReceiver
         PrimaryDevice.SetData(deviceData);
         PrimaryDevice.gameObject.SetActive(false);
 
-        
-
         myAnimator.SetTrigger("draw");
     }
 
