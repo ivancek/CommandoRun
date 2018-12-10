@@ -49,10 +49,7 @@ public class Soldier : Pawn, IDamageReceiver
     private Quaternion targetRot;
     private Quaternion defaultRot;
     private bool isRunning;
-    private bool isMoving;
-    private bool forceRotation;
     private float desiredRotationSpeed;
-
     
     
     /// <summary>
@@ -74,20 +71,16 @@ public class Soldier : Pawn, IDamageReceiver
     {
         base.Tick(deltaTime);
 
-        // We force the rotation to override navAgent's rotation speed. See SetDestination function.
-        if(forceRotation)
-        {
-            RotateTowardsTargetRotation(targetRot);
-        }
-
-        if (isMoving)
+        RotateTowardsTargetRotation(targetRot);
+    
+        if (!navAgent.isStopped)
         {
             if (DestinationReached)
             {
                 myAnimator.SetInteger("speed", 0);
                 Attack(queuedTarget);
                 InteractWith(queuedInteraction);
-                isMoving = false;
+                navAgent.isStopped = true;
             }
         }
     }
@@ -106,31 +99,28 @@ public class Soldier : Pawn, IDamageReceiver
             transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, step);
             return;
         }
-
-        forceRotation = false;
     }
 
 
     /// <summary>
-    /// Sets force rotation to true, gets target rotation and desired rotation speed.
+    /// Gets target rotation and desired rotation speed.
     /// This in turn uses Tick to quickly rotate, i.e. override navAgent's auto rotation.
     /// </summary>
     public void LookAtTweened(Vector3 position)
     {
-        forceRotation = true;
-
         targetRot = GetTargetRotation(position);
         desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
     }
 
 
     /// <summary>
-    /// Sets force rotation to true, gets target rotation and desired rotation speed.
+    /// Gets target rotation and desired rotation speed.
     /// This in turn uses Tick to quickly rotate, i.e. override navAgent's auto rotation.
     /// </summary>
     public void LookAtInstant(Vector3 position)
     {
         transform.rotation = GetTargetRotation(position);
+        targetRot = transform.rotation;
     }
 
 
@@ -170,11 +160,21 @@ public class Soldier : Pawn, IDamageReceiver
 
 
     /// <summary>
+    /// Sets target rotation
+    /// </summary>
+    public void SetTargetRotation(Vector3 direction)
+    {
+        targetRot = direction == Vector3.zero ? transform.rotation : Quaternion.LookRotation(direction);
+        desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
+    }
+
+
+    /// <summary>
     /// Gets the target rotation based from destination.
     /// </summary>
-    private Quaternion GetTargetRotation(Vector3 destination)
+    private Quaternion GetTargetRotation(Vector3 position)
     {
-        Vector3 direction = new Vector3(destination.x, transform.position.y, destination.z) - transform.position;
+        Vector3 direction = new Vector3(position.x, transform.position.y, position.z) - transform.position;
         return Quaternion.LookRotation(direction);
     }
 
@@ -188,7 +188,7 @@ public class Soldier : Pawn, IDamageReceiver
         navAgent.enabled = false;
         capsCollider.enabled = false;
         myAnimator.Play(string.Format("Death{0}", randomInt));
-
+        enabled = false;
 
         // After everything is done for death, we must invoke death event.
         if(OnDeath != null)
@@ -294,17 +294,13 @@ public class Soldier : Pawn, IDamageReceiver
         // Let the nav agent move again.
         navAgent.isStopped = false;
 
-        // We need to mark the soldier as moving. (needed in update).
-        isMoving = true;
-
-        // Request quick rotation. 
-        LookAtTweened(destination);
-
         // Notify nav agent and animator of new changes.
         myAnimator.SetInteger("speed", AnimatorSpeed);
 
         navAgent.stoppingDistance = stoppingDistance;
         navAgent.SetDestination(destination);
+
+        SetTargetRotation(navAgent.desiredVelocity);
     }
 
 
@@ -321,7 +317,7 @@ public class Soldier : Pawn, IDamageReceiver
 
         // When toggling speed while moving, we need to update the animator speed parameter as well.
         // Otherwise, we would change moving speed, but animation would stay the same.
-        if(isMoving)
+        if(!navAgent.isStopped)
         {
             myAnimator.SetInteger("speed", AnimatorSpeed);
         }
