@@ -8,10 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fadf7211dec6db74188b5dd3635da99a, type: 3}
-  m_Name: DefaultStats
+  m_Script: {fileID: 11500000, guid: 1679e37f7bee5114096c82d950bb7658, type: 3}
+  m_Name: ChaseAction
   m_EditorClassIdentifier: 
-  searchDuration: 2
-  searchRange: 8
-  lookRange: 10
-  talkRate: 10
+  moveStopDistance: 0.5

@@ -15,7 +15,7 @@ public class SpeechComponent : MonoBehaviour
             int randomInt = Random.Range(0, sentences.Length);
             lastTimeSpoken = Time.time;
 
-            Debug.LogFormat(sentences[randomInt]);
+            Debug.LogFormat("{0}:\"{1}\"", name, sentences[randomInt]);
         }
     }
 }

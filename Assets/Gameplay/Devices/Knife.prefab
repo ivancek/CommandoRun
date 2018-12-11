@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 33503396699432556}
   - component: {fileID: 23746942355640030}
   - component: {fileID: 114959588647092752}
-  - component: {fileID: 136201399866455256}
   - component: {fileID: 82668636541405444}
+  - component: {fileID: 65587259822963714}
   m_Layer: 12
   m_Name: Knife
   m_TagString: Untagged
@@ -86,6 +86,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1595481170542816}
   m_Mesh: {fileID: 4300000, guid: 75061fe987d18a84b8bd0305c9330545, type: 3}
+--- !u!65 &65587259822963714
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1595481170542816}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2, y: 0.8, z: 0.1}
+  m_Center: {x: 0, y: -0.12, z: 0}
 --- !u!82 &82668636541405444
 AudioSource:
   m_ObjectHideFlags: 1
@@ -194,18 +206,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canTick: 1
   initOnAwake: 1
-  animatorController: {fileID: 9100000, guid: 875e214a2ad07764aada4c9fb08cf637, type: 2}
+  animatorController: {fileID: 0}
   audioSource: {fileID: 82668636541405444}
---- !u!136 &136201399866455256
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1595481170542816}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.112117186
-  m_Height: 0.5
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.35, z: 0}

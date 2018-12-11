@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class Soldier : Pawn, IDamageReceiver
 {
-    [Header("Setup")]
+    [Header("Soldier")]
     public float MELEE_RANGE = 1.2f;
     public float RUN_SPEED = 4.8f;
     public float WALK_SPEED = 1.5f;
@@ -28,6 +28,8 @@ public class Soldier : Pawn, IDamageReceiver
     public SpeechComponent speechComponent;
     public AudioSource audioSource;
     public AudioClip[] hurtSounds;
+
+    public bool canMove;
 
     // Events
     public System.Action OnDeath;
@@ -80,6 +82,8 @@ public class Soldier : Pawn, IDamageReceiver
             if (DestinationReached)
             {
                 StopMoving();
+                Attack(queuedTarget);
+                InteractWith(queuedInteraction);
             }
         }
 
@@ -94,8 +98,6 @@ public class Soldier : Pawn, IDamageReceiver
     private void StopMoving()
     {
         myAnimator.SetInteger("speed", 0);
-        Attack(queuedTarget);
-        InteractWith(queuedInteraction);
         navAgent.isStopped = true;
         noiseEmitter.SetEmittingNoise(false);
     }
@@ -159,6 +161,7 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     public void ResetRotation()
     {
+        StopMoving();
         SetTargetRotation(defaultRot);
     }
 
@@ -203,6 +206,11 @@ public class Soldier : Pawn, IDamageReceiver
         capsCollider.enabled = false;
         myAnimator.Play(string.Format("Death{0}", randomInt));
         enabled = false;
+
+        if(PrimaryDevice)
+        {
+            PrimaryDevice.Drop();
+        }
 
         // After everything is done for death, we must invoke death event.
         if(OnDeath != null)
@@ -254,6 +262,7 @@ public class Soldier : Pawn, IDamageReceiver
     {
         if(target != null && PrimaryDevice)
         {
+            canMove = false; // this will get set to true once we get out of attack animator state.
             navAgent.isStopped = true;
             myAnimator.SetInteger("speed", 0);
 
@@ -269,6 +278,10 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     public void EquipPrimary(ItemData deviceData)
     {
+        StopMoving();
+
+        canMove = false; // this will get set to true once we get out of draw weapon animator state.
+
         PrimaryDevice = Instantiate(deviceData.prefab, weaponContainer, false);
         PrimaryDevice.SetData(deviceData);
         PrimaryDevice.gameObject.SetActive(false);
@@ -305,6 +318,8 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     public void SetDestination(Vector3 destination, float stoppingDistance)
     {
+        if(!canMove) { return; }
+        
         // Let the nav agent move again.
         navAgent.isStopped = false;
 

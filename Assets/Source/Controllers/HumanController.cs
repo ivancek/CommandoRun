@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class HumanController : PlayerController
 {
-    [Header("Setup")]
+    [Header("Human Controller")]
     /// <summary>
     /// What distance should the pawn stop at when attacking
     /// </summary>
@@ -37,8 +37,16 @@ public class HumanController : PlayerController
         base.NotifyPawnControlled(controlledPawn);
 
         soldier = (Soldier)controlledPawn;
+        soldier.OnDeath += SoldierDied;
     }
 
+
+    private void SoldierDied()
+    {
+        SetControlledPawn(null);
+        soldier.OnDeath -= SoldierDied;
+        soldier = null;
+    }
 
     /// <summary>
     /// Override this to add your own input bindings.
@@ -67,6 +75,8 @@ public class HumanController : PlayerController
     /// </summary>
     private void HandleMouseButtonDown()
     {
+        if(!controlledPawn) { return; }
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit outHit;
 

@@ -35,6 +35,7 @@ public class EquipableDevice : Actor
     }
 
     public virtual void Use(Animator animator) { }
+    public virtual void Drop() { }
 
     public virtual void SetData(ItemData data)
     {

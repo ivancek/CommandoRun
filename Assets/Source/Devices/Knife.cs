@@ -46,4 +46,18 @@ public class Knife : EquipableDevice
 
         base.Use(animator);
     }
+
+    public override void Drop()
+    {
+        base.Drop();
+
+        transform.SetParent(null);
+        isAttacking = false;
+
+        GetComponent<Collider>().isTrigger = false;
+
+        Rigidbody rBody = gameObject.AddComponent<Rigidbody>();
+        rBody.velocity = new Vector3(.5f, 3.0f, .5f);
+        rBody.angularVelocity = new Vector3(0, 3, 0);
+    }
 }

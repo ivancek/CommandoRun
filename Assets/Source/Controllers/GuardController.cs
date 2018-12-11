@@ -5,23 +5,23 @@ using UnityEngine;
 
 public class GuardController : AIController
 {
-    private Soldier mySoldier;
+    protected Soldier soldier;
 
     public override void NotifyPawnControlled(Pawn controlledPawn)
     {
         base.NotifyPawnControlled(controlledPawn);
 
-        mySoldier = (Soldier)controlledPawn;
-        mySoldier.gameObject.layer = 0;
+        soldier = (Soldier)controlledPawn;
+        soldier.gameObject.layer = 0;
 
-        mySoldier.OnDeath += SoldierDied;
+        soldier.OnDeath += SoldierDied;
     }
 
 
     private void SoldierDied()
     {
         SetControlledPawn(null);
-        mySoldier.OnDeath -= SoldierDied;
-        mySoldier = null;
+        soldier.OnDeath -= SoldierDied;
+        soldier = null;
     }
 }
