@@ -103,7 +103,7 @@ public class Soldier : Pawn, IDamageReceiver
     /// </summary>
     private void RotateTowardsTargetRotation(Quaternion newRot)
     {
-        if(Quaternion.Angle(transform.rotation, newRot) > 5)
+        if(Quaternion.Angle(transform.rotation, newRot) > 0.1f)
         {
             var step = desiredRotationSpeed * Time.deltaTime;
             transform.rotation = Quaternion.RotateTowards(transform.rotation, newRot, step);
