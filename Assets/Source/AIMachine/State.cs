@@ -20,7 +20,7 @@ public class State : ScriptableObject
     {
         for (int i = 0; i < actions.Length; i++)
         {
-            actions[i].Act(i, controller);
+            actions[i].Act(controller);
         }
     }
 

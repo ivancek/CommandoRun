@@ -25,6 +25,7 @@ public class Soldier : Pawn, IDamageReceiver
     public NoiseEmitter noiseEmitter;
     public Animator myAnimator;
     public Transform weaponContainer;
+    public SpeechComponent speechComponent;
     public AudioSource audioSource;
     public AudioClip[] hurtSounds;
 
@@ -86,6 +87,10 @@ public class Soldier : Pawn, IDamageReceiver
         RotateTowardsTargetRotation(targetRot);
     }
 
+
+    /// <summary>
+    /// All that is needed when the Soldier stops moving.
+    /// </summary>
     private void StopMoving()
     {
         myAnimator.SetInteger("speed", 0);

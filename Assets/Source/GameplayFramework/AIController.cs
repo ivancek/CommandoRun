@@ -17,7 +17,7 @@ public class AIController : Controller
 
     [HideInInspector] public Actor target;
     [HideInInspector] public NavMeshAgent navMeshAgent;
-    [HideInInspector ]public float[] actionsTimeElapsed;
+    [HideInInspector ]public float stateTime;
 
 
     public override void NotifyPawnControlled(Pawn controlledPawn)
@@ -43,32 +43,21 @@ public class AIController : Controller
     {
         if (nextState != remainState)
         {
-            OnExitState(currentState);
-
             currentState = nextState;
-            actionsTimeElapsed = new float[currentState.actions.Length];
+            OnExitState();
         }
     }
 
 
-    public bool CheckIfCountDownElapsed(int index, float duration)
+    public bool CheckIfCountDownElapsed(float duration)
     {
-        actionsTimeElapsed[index] += Time.deltaTime;
-        return actionsTimeElapsed[index] >= duration;
+        stateTime += Time.deltaTime;
+        return stateTime >= duration;
     }
 
 
-    public void ResetActionTimer(int actionIndex)
+    private void OnExitState()
     {
-        actionsTimeElapsed[actionIndex] = 0;
-    }
-
-
-    private void OnExitState(State oldState)
-    {
-        for (int i = 0; i < actionsTimeElapsed.Length; i++)
-        {
-            actionsTimeElapsed[i] = 0;
-        } 
+        stateTime = 0;
     }
 }

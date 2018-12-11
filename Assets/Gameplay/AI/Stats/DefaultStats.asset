@@ -14,4 +14,4 @@ MonoBehaviour:
   searchDuration: 2
   searchRange: 8
   lookRange: 10
-  talkRate: 2
+  talkRate: 3

@@ -5,12 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "PluggableAI/Actions/Talk")]
 public class TalkAction : StateAction
 {
-    public override void Act(int actionIndex, AIController controller)
+    public override void Act(AIController controller)
     {
-        if (controller.CheckIfCountDownElapsed(actionIndex, controller.enemyStats.talkRate))
-        {
-            Debug.LogFormat("Random sentence from {0}", controller.GetControlledPawn().name);
-            controller.ResetActionTimer(actionIndex);
-        }
+        Soldier soldier = (Soldier)controller.GetControlledPawn();
+        soldier.speechComponent.RandomSpeak(controller.enemyStats.talkRate);
     }
 }

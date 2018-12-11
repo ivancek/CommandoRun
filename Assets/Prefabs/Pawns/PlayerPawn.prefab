@@ -778,6 +778,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4757482029221870}
   - component: {fileID: 114244687584567736}
+  - component: {fileID: 114102749641681232}
   - component: {fileID: 136976106426375144}
   - component: {fileID: 114917737801188246}
   - component: {fileID: 54678473580930398}
@@ -1678,6 +1679,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114102749641681232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1981960619317264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab48e5c48553cdc44a2f1d73f51e813d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sentences:
+  - What a lovely world this is.
+  - You know, I could have stayed at home.
+  - Nothing beats some mud training.
+  - Better watch for those enemies.
 --- !u!114 &114244687584567736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1703,6 +1720,7 @@ MonoBehaviour:
   noiseEmitter: {fileID: 114917737801188246}
   myAnimator: {fileID: 95032068585856566}
   weaponContainer: {fileID: 4130698799505590}
+  speechComponent: {fileID: 114102749641681232}
   audioSource: {fileID: 82547946178290606}
   hurtSounds:
   - {fileID: 8300000, guid: 685b65d9f8010f94193ff16bada4cde9, type: 3}
