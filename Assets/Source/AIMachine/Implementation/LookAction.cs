@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "PluggableAI/Actions/Look")]
 public class LookAction : StateAction
 {
-    public override void Act(AIController controller)
+    public override void Act(int actionIndex, AIController controller)
     {
         Soldier soldier = (Soldier)controller.GetControlledPawn();
         soldier.LookAtTweened(controller.target.transform.position);

@@ -7,14 +7,19 @@ using UnityEngine;
 /// </summary>
 public class Controller : Actor
 {
-    private Pawn controlledPawn;
+    protected Pawn controlledPawn;
 
     /// <summary>
     /// Called when this controller has taken control of the pawn.
     /// </summary>
     public virtual void NotifyPawnControlled(Pawn controlledPawn) { }
 
-    
+    /// <summary>
+    /// Called when this controller has taken control of the pawn.
+    /// </summary>
+    public virtual void NotifyPawnUncontrolled(Pawn controlledPawn) { }
+
+
     /// <summary>
     /// Initializes the Controller
     /// </summary>
@@ -39,8 +44,11 @@ public class Controller : Actor
     public void SetControlledPawn(Pawn pawnToControl)
     {
         controlledPawn = pawnToControl;
-        controlledPawn.SetController(this);
 
-        NotifyPawnControlled(controlledPawn);
+        if(pawnToControl != null)
+        {
+            controlledPawn.SetController(this);
+            NotifyPawnControlled(controlledPawn);
+        }
     }
 }

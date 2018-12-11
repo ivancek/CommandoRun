@@ -16,19 +16,8 @@ public class ScanDecision : Decision
 
         int layerMask = 1 << 11;
         Collider[] colliders = Physics.OverlapSphere(controller.transform.position, controller.enemyStats.searchRange, layerMask, QueryTriggerInteraction.Collide);
-
-        if(colliders.Length > 0)
-        {
-            if(!controller.target)
-            {
-                controller.target = colliders[0].gameObject.GetComponent<Pawn>();
-            }
-        }
-        else
-        {
-            controller.target = null;
-        }
-
+        controller.target = colliders.Length > 0 ? colliders[0].gameObject.GetComponent<Actor>() : null;
+    
         return colliders.Length > 0;
     }
 }

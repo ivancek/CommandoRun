@@ -36,7 +36,7 @@ public class HumanController : PlayerController
     {
         base.NotifyPawnControlled(controlledPawn);
 
-        soldier = (Soldier)GetControlledPawn();
+        soldier = (Soldier)controlledPawn;
     }
 
 

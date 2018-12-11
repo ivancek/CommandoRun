@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class StateAction : ScriptableObject
 {
-    public abstract void Act(AIController controller);
+    public abstract void Act(int actionIndex, AIController controller);
 }

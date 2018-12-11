@@ -13,5 +13,15 @@ public class GuardController : AIController
 
         mySoldier = (Soldier)controlledPawn;
         mySoldier.gameObject.layer = 0;
-    }   
+
+        mySoldier.OnDeath += SoldierDied;
+    }
+
+
+    private void SoldierDied()
+    {
+        SetControlledPawn(null);
+        mySoldier.OnDeath -= SoldierDied;
+        mySoldier = null;
+    }
 }

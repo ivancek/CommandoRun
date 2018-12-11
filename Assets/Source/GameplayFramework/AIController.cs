@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[System.Serializable]
-public struct EnemyStats
-{
-    public float searchDuration;
-    public float searchRange;
-    public float lookRange;
-}
+
 
 /// <summary>
 /// Base class for all AI Controllers
@@ -22,9 +15,9 @@ public class AIController : Controller
     public State remainState;
     public EnemyStats enemyStats;
 
-    [HideInInspector] public Pawn target;
+    [HideInInspector] public Actor target;
     [HideInInspector] public NavMeshAgent navMeshAgent;
-    [HideInInspector] public float stateTimeElapsed;
+    [HideInInspector ]public float[] actionsTimeElapsed;
 
 
     public override void NotifyPawnControlled(Pawn controlledPawn)
@@ -39,7 +32,10 @@ public class AIController : Controller
     {
         base.Tick(deltaTime);
 
-        currentState.UpdateState(this);
+        if(controlledPawn)
+        {
+            currentState.UpdateState(this);
+        }
     }
 
 
@@ -47,21 +43,32 @@ public class AIController : Controller
     {
         if (nextState != remainState)
         {
+            OnExitState(currentState);
+
             currentState = nextState;
-            OnExitState();
+            actionsTimeElapsed = new float[currentState.actions.Length];
         }
     }
 
 
-    public bool CheckIfCountDownElapsed(float duration)
+    public bool CheckIfCountDownElapsed(int index, float duration)
     {
-        stateTimeElapsed += Time.deltaTime;
-        return (stateTimeElapsed >= duration);
+        actionsTimeElapsed[index] += Time.deltaTime;
+        return actionsTimeElapsed[index] >= duration;
     }
 
 
-    private void OnExitState()
+    public void ResetActionTimer(int actionIndex)
     {
-        stateTimeElapsed = 0;
+        actionsTimeElapsed[actionIndex] = 0;
+    }
+
+
+    private void OnExitState(State oldState)
+    {
+        for (int i = 0; i < actionsTimeElapsed.Length; i++)
+        {
+            actionsTimeElapsed[i] = 0;
+        } 
     }
 }
