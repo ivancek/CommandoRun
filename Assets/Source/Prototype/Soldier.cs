@@ -87,7 +87,6 @@ public class Soldier : Pawn, IDamageReceiver
             }
         }
 
-
         RotateTowardsTargetRotation(targetRot);
     }
 

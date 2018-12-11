@@ -12,8 +12,6 @@ public class ScanDecision : Decision
 
     private bool Scan(AIController controller)
     {
-        controller.navMeshAgent.isStopped = true;
-
         int layerMask = 1 << 11;
         Collider[] colliders = Physics.OverlapSphere(controller.transform.position, controller.enemyStats.searchRange, layerMask, QueryTriggerInteraction.Collide);
         controller.target = colliders.Length > 0 ? colliders[0].gameObject.GetComponent<Actor>() : null;

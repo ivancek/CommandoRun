@@ -20,5 +20,6 @@ public class ChaseAction : StateAction
     {
         Soldier soldier = (Soldier)controller.GetControlledPawn();
         soldier.SetDestination(controller.target.transform.position, moveStopDistance);
+        soldier.navAgent.isStopped = false;
     }
 }
