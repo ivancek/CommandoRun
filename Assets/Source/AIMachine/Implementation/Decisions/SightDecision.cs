@@ -14,6 +14,8 @@ public class SightDecision : Decision
 
     private bool See(AIController controller)
     {
+        bool isPlayerAlive = GameInstance.GameMode.PlayerPawn.enabled;
+
         bool isPlayerInRange = Vector3.Distance(GameInstance.GameMode.PlayerPawn.transform.position, controller.GetControlledPawn().transform.position) <= controller.enemyStats.lookRange;
 
         Vector3 directionToPlayer = GameInstance.GameMode.PlayerPawn.transform.position - controller.GetControlledPawn().transform.position;

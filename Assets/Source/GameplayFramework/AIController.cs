@@ -35,7 +35,10 @@ public class AIController : Controller
 
         if(controlledPawn)
         {
-            currentState.UpdateState(this);
+            if(currentState)
+            {
+                currentState.UpdateState(this);
+            }
         }
     }
 
