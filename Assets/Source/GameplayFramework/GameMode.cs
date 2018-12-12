@@ -8,14 +8,21 @@ using UnityEngine;
 /// </summary>
 public class GameMode : Actor
 {
-    [Header("Setup")]
+    [Header("Game Mode")]
     public GameState defaultGameState;
+    public PlayerState defaultPlayerState;
     public PlayerController defaultController;
     public Pawn defaultPawn;
 
-    public Pawn PlayerPawn { get; private set; }
+    // Public properties
     public GameState GameState { get; private set; }
+    public PlayerState PlayerState { get; private set; }
     public PlayerController PlayerController { get; private set; }
+    public Pawn PlayerPawn { get; private set; }
+
+
+
+
 
 
     /// <summary>
@@ -25,7 +32,14 @@ public class GameMode : Actor
     {
         base.Init();
         
+        // Setup Game state
+        GameState = Instantiate(defaultGameState, Vector3.zero, Quaternion.identity, transform);
+        GameState.name = "GameState";
         
+        // Setup Player State
+        PlayerState = Instantiate(defaultPlayerState, Vector3.zero, Quaternion.identity, transform);
+        PlayerState.name = "PlayerState";
+
         // We need the controller to control the game.
         PlayerController = Instantiate(defaultController, Vector3.zero, Quaternion.identity, transform);
         PlayerController.name = "PlayerController";
@@ -47,8 +61,5 @@ public class GameMode : Actor
             }
         }
 
-        // Setup Game state
-        GameState = Instantiate(defaultGameState, Vector3.zero, Quaternion.identity, transform);
-        GameState.name = "GameState";
     }
 }

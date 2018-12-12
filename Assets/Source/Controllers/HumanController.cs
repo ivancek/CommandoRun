@@ -27,7 +27,10 @@ public class HumanController : PlayerController
 
 
     private Soldier soldier;
-    private GameObject focusedObject;
+    private GameObject currentFocusedObject;
+    
+
+
 
     /// <summary>
     /// Initializes HumanController instance
@@ -46,8 +49,15 @@ public class HumanController : PlayerController
 
         if(!controlledPawn) { return; }
 
+
+        
         HandleMouseHover();
 
+
+        /// When queueTarget is applied, we force the soldier to destination.
+        /// This is because targets can move. When a player clicks a stationary target,
+        /// soldier will start to walk toward the spot. Should the target move, we must update
+        /// the destination. We are basically setting 'chase' mode to our soldier.
         if (soldier.QueuedTarget != null)
         {
             soldier.SetDestination(soldier.QueuedTarget.Transform.position, attackStopDistance);
@@ -101,26 +111,31 @@ public class HumanController : PlayerController
     }
 
 
-
     /// <summary>
     /// In Tick() we call the event system to give us the hovered object.
     /// We handle this here.
     /// </summary>
     private void HandleMouseHover()
     {
-        GameObject focusedObject = ((StandaloneInputModule)EventSystem.current.currentInputModule).GetCurrentFocusedGameObject();
+        GameObject newFocusedObj = ((StandaloneInputModule)EventSystem.current.currentInputModule).GetCurrentFocusedGameObject();
 
-        if (!focusedObject) { return; }
+        /// Early exit if no object focused or focusing the same object.
+        /// This is to prevent constant GetComponent<> calls. Optimization at its finest :)
+        if (!newFocusedObj || newFocusedObj == currentFocusedObject) { return; }
 
-        if (focusedObject.GetComponent<IDamageReceiver>() != null)
+        /// Here we evaluate the object. This is mainly for cursor changes.
+        if (newFocusedObj.GetComponent<IDamageReceiver>() != null)
         {
-            string cursorPath = soldier.IsInWeaponRange(focusedObject.transform.position) ? "UI/AttackCursor" : "UI/SpellCursor";
+            string cursorPath = soldier.IsInWeaponRange(newFocusedObj.transform.position) ? "UI/AttackCursor" : "UI/SpellCursor";
             Cursor.SetCursor(Resources.Load<Texture2D>(cursorPath), Vector2.zero, CursorMode.Auto);
         }
         else
         {
             Cursor.SetCursor(Resources.Load<Texture2D>("UI/NormalCursor"), Vector2.zero, CursorMode.Auto);
         }
+
+        /// Update the focused object.
+        currentFocusedObject = newFocusedObj;
     }
 
 
