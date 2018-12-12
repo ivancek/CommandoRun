@@ -134,9 +134,6 @@ public class Soldier : Pawn, IDamageReceiver
     }
 
 
-    
-
-    
     /// <summary>
     /// Resets the rotation back to the rotation Soldier had on BeginPlay
     /// </summary>
@@ -145,9 +142,6 @@ public class Soldier : Pawn, IDamageReceiver
         StopMoving();
         SetTargetRotation(defaultRot);
     }
-
-
-    
 
 
     /// <summary>

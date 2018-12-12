@@ -61,3 +61,5 @@ MonoBehaviour:
     type: 2}
   defaultPawn: {fileID: 114244687584567736, guid: 4eea09b09a380f940b6e580e00b8958a,
     type: 2}
+  defaultHUD: {fileID: 114549436920939898, guid: 9534ca396b6b6034398fd32d99406698,
+    type: 2}

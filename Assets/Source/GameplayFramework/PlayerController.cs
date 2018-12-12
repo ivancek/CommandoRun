@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : Controller
 {
+    public HUD HUD { get; set; }
+
     /// <summary>
     /// Override this to add your own input bindings.
     /// </summary>

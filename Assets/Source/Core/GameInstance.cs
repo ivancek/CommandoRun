@@ -23,7 +23,17 @@ public class GameInstance : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
         SceneManager.sceneLoaded += SceneLoaded;
+        SceneManager.sceneUnloaded += SceneUnloaded;
+    }
+
+    private void SceneUnloaded(Scene arg0)
+    {
+        SceneManager.sceneLoaded -= SceneLoaded;
+        SceneManager.sceneUnloaded -= SceneUnloaded;
+
+        instance = null;
     }
 
 

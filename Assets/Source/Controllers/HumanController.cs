@@ -49,10 +49,7 @@ public class HumanController : PlayerController
 
         if(!controlledPawn) { return; }
 
-
-        
         HandleMouseHover();
-
 
         /// When queueTarget is applied, we force the soldier to destination.
         /// This is because targets can move. When a player clicks a stationary target,
@@ -86,8 +83,12 @@ public class HumanController : PlayerController
         soldier.OnDeath -= SoldierDied;
         soldier = null;
 
-        Cursor.SetCursor(Resources.Load<Texture2D>("UI/SpellCursor"), Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(Resources.Load<Texture2D>("UI/NormalCursor"), Vector2.zero, CursorMode.Auto);
+
+        GameOverWidget goWidget = HUD.SpawnWidget<GameOverWidget>();
+        goWidget.buttonRespawn.onClick.AddListener(GameInstance.GameMode.Restart);
     }
+
 
     /// <summary>
     /// Override this to add your own input bindings.

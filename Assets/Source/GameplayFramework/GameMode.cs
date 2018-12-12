@@ -13,15 +13,22 @@ public class GameMode : Actor
     public PlayerState defaultPlayerState;
     public PlayerController defaultController;
     public Pawn defaultPawn;
+    public HUD defaultHUD;
+
 
     // Public properties
     public GameState GameState { get; private set; }
     public PlayerState PlayerState { get; private set; }
     public PlayerController PlayerController { get; private set; }
     public Pawn PlayerPawn { get; private set; }
+    public HUD HUD { get; private set; }
 
 
 
+    /// <summary>
+    /// Override this to add your own functionality.
+    /// </summary>
+    public virtual void Restart() { }
 
 
 
@@ -40,9 +47,14 @@ public class GameMode : Actor
         PlayerState = Instantiate(defaultPlayerState, Vector3.zero, Quaternion.identity, transform);
         PlayerState.name = "PlayerState";
 
+        // Setup HUD
+        HUD = Instantiate(defaultHUD, Vector3.zero, Quaternion.identity, transform);
+        HUD.name = "HUD";
+
         // We need the controller to control the game.
         PlayerController = Instantiate(defaultController, Vector3.zero, Quaternion.identity, transform);
         PlayerController.name = "PlayerController";
+        PlayerController.HUD = HUD;
 
         // If there's a pawn defined, spawn it.
         if(defaultPawn)

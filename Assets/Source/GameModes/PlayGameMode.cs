@@ -1,4 +1,6 @@
 ﻿using UnityStandardAssets.Cameras;
+using UnityEngine.SceneManagement;
+
 
 /// <summary>
 /// Play game mode implementation. Here we set rules like Win condition, Lose condition, Rewards, Obstacle spawning etc.
@@ -16,5 +18,13 @@ public class PlayGameMode : GameMode
         {
             FindObjectOfType<AutoCam>().SetTarget(PlayerPawn.transform);
         }
+    }
+
+
+    public override void Restart()
+    {
+        base.Restart();
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
