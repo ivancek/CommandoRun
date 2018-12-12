@@ -18,6 +18,6 @@ public class LookAction : StateAction
         Vector3 start = new Vector3(controller.transform.position.x, 2.4f, controller.transform.position.z);
         Vector3 end = new Vector3(controller.target.transform.position.x, controller.target.GetComponent<CapsuleCollider>().center.y, controller.target.transform.position.z);
 
-        Debug.DrawLine(start, end, Color.red);
+        Debug.DrawLine(start, end, Color.green);
     }
 }

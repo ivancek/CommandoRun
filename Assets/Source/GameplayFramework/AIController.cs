@@ -24,6 +24,7 @@ public class AIController : Controller
     {
         base.NotifyPawnControlled(controlledPawn);
 
+        target = GameInstance.GameMode.PlayerPawn;
         navMeshAgent = controlledPawn.GetComponent<NavMeshAgent>();
     }
 

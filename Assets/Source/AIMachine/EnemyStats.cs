@@ -5,7 +5,7 @@
 public class EnemyStats : ScriptableObject
 {
     public float searchDuration;
-    public float searchRange;
+    public float hearingRange;
     public float lookRange;
     public float talkRate;
 }

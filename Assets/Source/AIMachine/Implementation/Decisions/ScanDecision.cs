@@ -12,12 +12,10 @@ public class ScanDecision : Decision
 
     private bool Scan(AIController controller)
     {
-        bool isPlayerInRange = Vector3.Distance(GameInstance.GameMode.PlayerPawn.transform.position, controller.GetControlledPawn().transform.position) <= controller.enemyStats.searchRange;
+        bool isPlayerInRange = Vector3.Distance(GameInstance.GameMode.PlayerPawn.transform.position, controller.GetControlledPawn().transform.position) <= controller.enemyStats.hearingRange;
         bool isPlayerAlive = GameInstance.GameMode.PlayerPawn.enabled;
 
         bool continueScanning = isPlayerAlive && isPlayerInRange;
-
-        controller.target = continueScanning ? GameInstance.GameMode.PlayerPawn : null;
 
         return continueScanning;
     }
