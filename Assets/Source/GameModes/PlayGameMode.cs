@@ -12,9 +12,9 @@ public class PlayGameMode : GameMode
     {
         base.Init();
 
-        if(pawnInstance)
+        if(PlayerPawn)
         {
-            FindObjectOfType<AutoCam>().SetTarget(pawnInstance.transform);
+            FindObjectOfType<AutoCam>().SetTarget(PlayerPawn.transform);
         }
     }
 }

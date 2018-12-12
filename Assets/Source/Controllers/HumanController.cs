@@ -119,7 +119,7 @@ public class HumanController : PlayerController
         }
         else
         {
-            Cursor.SetCursor(Resources.Load<Texture2D>("UI/SpellCursor"), Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(Resources.Load<Texture2D>("UI/NormalCursor"), Vector2.zero, CursorMode.Auto);
         }
     }
 

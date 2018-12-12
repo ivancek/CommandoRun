@@ -15,8 +15,6 @@ public class Soldier : Pawn, IDamageReceiver
     public float MELEE_RANGE = 1.2f;
     public float RUN_SPEED = 4.8f;
     public float WALK_SPEED = 1.5f;
-    public float MIN_ROT_SPEED = 100.0f;
-    public float MAX_ROT_SPEED = 400.0f;
     public float MAX_HEALTH = 100.0f;
 
     // Set in Inspector
@@ -49,10 +47,7 @@ public class Soldier : Pawn, IDamageReceiver
 
     // Private fields
     private IInteractable queuedInteraction;
-    private Quaternion targetRot;
-    private Quaternion defaultRot;
     private bool isRunning;
-    private float desiredRotationSpeed;
     
     
     /// <summary>
@@ -139,20 +134,7 @@ public class Soldier : Pawn, IDamageReceiver
     }
 
 
-    /// <summary>
-    /// Calculates the desired rotation speed (angle percent) based of min and max rotation speed.
-    /// </summary>
-    private float GetDesiredRotationSpeed(Quaternion targetRotation)
-    {
-        // get angle
-        float angle = Quaternion.Angle(targetRotation, transform.rotation);
-        // max angle we can have is 180. We get the percentage of that;
-        float percent = angle / 180;
-        // we start with min rot speed and add the percent of max.
-        float desiredSpeed = MIN_ROT_SPEED + MAX_ROT_SPEED * percent;
-
-        return desiredSpeed;
-    }
+    
 
     
     /// <summary>
@@ -165,34 +147,7 @@ public class Soldier : Pawn, IDamageReceiver
     }
 
 
-    /// <summary>
-    /// Sets target rotation
-    /// </summary>
-    public void SetTargetRotation(Quaternion rotation)
-    {
-        targetRot = rotation;
-        desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
-    }
-
-
-    /// <summary>
-    /// Sets target rotation
-    /// </summary>
-    public void SetTargetRotation(Vector3 direction)
-    {
-        targetRot = direction == Vector3.zero ? transform.rotation : Quaternion.LookRotation(direction);
-        desiredRotationSpeed = GetDesiredRotationSpeed(targetRot);
-    }
-
-
-    /// <summary>
-    /// Gets the target rotation based from destination.
-    /// </summary>
-    private Quaternion GetTargetRotation(Vector3 position)
-    {
-        Vector3 direction = new Vector3(position.x, transform.position.y, position.z) - transform.position;
-        return Quaternion.LookRotation(direction);
-    }
+    
 
 
     /// <summary>

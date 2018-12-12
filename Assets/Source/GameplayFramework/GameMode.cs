@@ -9,12 +9,14 @@ using UnityEngine;
 public class GameMode : Actor
 {
     [Header("Setup")]
+    public GameState defaultGameState;
     public PlayerController defaultController;
     public Pawn defaultPawn;
 
-    public Pawn PlayerPawn { get { return pawnInstance; } }
+    public Pawn PlayerPawn { get; private set; }
+    public GameState GameState { get; private set; }
+    public PlayerController PlayerController { get; private set; }
 
-    protected Pawn pawnInstance;
 
     /// <summary>
     /// Initializes the GameMode
@@ -23,10 +25,10 @@ public class GameMode : Actor
     {
         base.Init();
         
-        // TODO: GameState implementation
-
+        
         // We need the controller to control the game.
-        PlayerController pController = Instantiate(defaultController, Vector3.zero, Quaternion.identity, transform);
+        PlayerController = Instantiate(defaultController, Vector3.zero, Quaternion.identity, transform);
+        PlayerController.name = "PlayerController";
 
         // If there's a pawn defined, spawn it.
         if(defaultPawn)
@@ -37,11 +39,16 @@ public class GameMode : Actor
             if (pStart)
             {
                 // Once we have the playerStart, spawn and init the pawn.
-                pawnInstance = Instantiate(defaultPawn, pStart.transform.position, pStart.transform.rotation);
+                PlayerPawn = Instantiate(defaultPawn, pStart.transform.position, pStart.transform.rotation);
+                PlayerPawn.name = "PlayerPawn";
 
                 // In order to control the pawn, the playerController must control it.
-                pController.SetControlledPawn(pawnInstance);
+                PlayerController.SetControlledPawn(PlayerPawn);
             }
         }
+
+        // Setup Game state
+        GameState = Instantiate(defaultGameState, Vector3.zero, Quaternion.identity, transform);
+        GameState.name = "GameState";
     }
 }
