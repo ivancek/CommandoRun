@@ -53,6 +53,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canTick: 1
   initOnAwake: 1
-  attackStopDistance: 2.2
+  attackStopDistance: 2.5
   moveStopDistance: 0.5
   useStopDistance: 1.5

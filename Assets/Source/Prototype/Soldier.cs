@@ -38,7 +38,8 @@ public class Soldier : Pawn, IDamageReceiver
     // public Properties
     public EquipableDevice PrimaryDevice { get; protected set; } 
     public Transform Transform { get { return transform; } }
-
+    public IDamageReceiver QueuedTarget { get; private set; }
+    
 
     // Private Properties for easier code reading.
     private int AnimatorSpeed { get { return isRunning ? 2 : 1; } }
@@ -48,7 +49,6 @@ public class Soldier : Pawn, IDamageReceiver
 
     // Private fields
     private IInteractable queuedInteraction;
-    private IDamageReceiver queuedTarget;
     private Quaternion targetRot;
     private Quaternion defaultRot;
     private bool isRunning;
@@ -82,7 +82,7 @@ public class Soldier : Pawn, IDamageReceiver
             if (DestinationReached)
             {
                 StopMoving();
-                Attack(queuedTarget);
+                Attack(QueuedTarget);
                 InteractWith(queuedInteraction);
             }
         }
@@ -237,7 +237,7 @@ public class Soldier : Pawn, IDamageReceiver
     /// <param name="interaction"></param>
     public void SetQueuedTarget(IDamageReceiver target)
     {
-        queuedTarget = target;
+        QueuedTarget = target;
     }
 
 

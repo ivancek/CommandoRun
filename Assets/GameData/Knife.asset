@@ -14,7 +14,7 @@ MonoBehaviour:
   shortName: Knife
   displayName: Standard Issue Knife
   description: A single blow with this means death.
-  range: 2.2
+  range: 2
   rateOfFire: 1.2
   prefab: {fileID: 114959588647092752, guid: 9717106812885364199daa94754b5461, type: 2}
   pickupPrefab: {fileID: 1555696788265532, guid: 68c4c3340df9d70458f1697c57df88c1,

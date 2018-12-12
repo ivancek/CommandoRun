@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// HumanController is the play class for the player. It implements specific actions a player can do while playing.
@@ -26,9 +27,34 @@ public class HumanController : PlayerController
 
 
     private Soldier soldier;
-    
-    
-    
+    private GameObject focusedObject;
+
+    /// <summary>
+    /// Initializes HumanController instance
+    /// </summary>
+    public override void Init()
+    {
+        base.Init();
+
+        Cursor.SetCursor(Resources.Load<Texture2D>("UI/SpellCursor"), Vector2.zero, CursorMode.Auto);
+    }
+
+
+    public override void Tick(float deltaTime)
+    {
+        base.Tick(deltaTime);
+
+        if(!controlledPawn) { return; }
+
+        HandleMouseHover();
+
+        if (soldier.QueuedTarget != null)
+        {
+            soldier.SetDestination(soldier.QueuedTarget.Transform.position, attackStopDistance);
+        }
+    }
+
+
     /// <summary>
     /// Casts the controlled pawn to soldier. Need a reference for easier use later.
     /// </summary>
@@ -41,11 +67,16 @@ public class HumanController : PlayerController
     }
 
 
+    /// <summary>
+    /// Handle soldier death.
+    /// </summary>
     private void SoldierDied()
     {
         SetControlledPawn(null);
         soldier.OnDeath -= SoldierDied;
         soldier = null;
+
+        Cursor.SetCursor(Resources.Load<Texture2D>("UI/SpellCursor"), Vector2.zero, CursorMode.Auto);
     }
 
     /// <summary>
@@ -67,6 +98,29 @@ public class HumanController : PlayerController
     private void ToggleWalkRun()
     {
         soldier.ToggleRunWalk();
+    }
+
+
+
+    /// <summary>
+    /// In Tick() we call the event system to give us the hovered object.
+    /// We handle this here.
+    /// </summary>
+    private void HandleMouseHover()
+    {
+        GameObject focusedObject = ((StandaloneInputModule)EventSystem.current.currentInputModule).GetCurrentFocusedGameObject();
+
+        if (!focusedObject) { return; }
+
+        if (focusedObject.GetComponent<IDamageReceiver>() != null)
+        {
+            string cursorPath = soldier.IsInWeaponRange(focusedObject.transform.position) ? "UI/AttackCursor" : "UI/SpellCursor";
+            Cursor.SetCursor(Resources.Load<Texture2D>(cursorPath), Vector2.zero, CursorMode.Auto);
+        }
+        else
+        {
+            Cursor.SetCursor(Resources.Load<Texture2D>("UI/SpellCursor"), Vector2.zero, CursorMode.Auto);
+        }
     }
 
 
