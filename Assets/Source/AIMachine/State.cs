@@ -38,16 +38,7 @@ public class State : ScriptableObject
             else
             {
                 controller.TransitionToState(transitions[i].falseState);
-                
-                // If we enter a null state as falseState, break the loop. 
-                // We don't want other decisions to rule out this in the following loop iteration
-                // We use this to basically stop the machine.
-                if(transitions[i].falseState == null)
-                {
-                    return;
-                }
             }
-
         }
     }
 }
