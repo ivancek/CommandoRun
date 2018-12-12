@@ -1709,11 +1709,11 @@ MonoBehaviour:
   canTick: 1
   initOnAwake: 1
   AIControllerPrefab: {fileID: 0}
+  MIN_ROT_SPEED: 100
+  MAX_ROT_SPEED: 400
   MELEE_RANGE: 2
   RUN_SPEED: 4.8
   WALK_SPEED: 1.4
-  MIN_ROT_SPEED: 100
-  MAX_ROT_SPEED: 400
   MAX_HEALTH: 100
   navAgent: {fileID: 195952518095855820}
   capsCollider: {fileID: 136976106426375144}
@@ -1747,7 +1747,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1
+  m_Radius: 0.6
   m_Height: 2.6
   m_Direction: 1
   m_Center: {x: 0, y: 1.3, z: 0}
