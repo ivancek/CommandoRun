@@ -7,8 +7,8 @@ public class AttackState : StateMachineBehaviour {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Soldier soldier = animator.gameObject.GetComponent<Soldier>();
-        soldier.canMove = true;
+        //Soldier soldier = animator.gameObject.GetComponent<Soldier>();
+        //soldier.canMove = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
