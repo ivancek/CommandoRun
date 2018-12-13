@@ -150,9 +150,10 @@ public class HumanController : PlayerController
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit outHit;
 
-        // Set mask to ignore layer 11 & 12 (player & melee weapon) 
+        // Set mask to ignore layers
         int layerMask = 1 << 11;
         layerMask |= 1 << 12;
+        layerMask |= 1 << 13;
         layerMask = ~layerMask;
 
         if (Physics.Raycast(ray, out outHit, 100, layerMask, QueryTriggerInteraction.Collide))

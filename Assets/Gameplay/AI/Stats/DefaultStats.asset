@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: DefaultStats
   m_EditorClassIdentifier: 
   investigateDuration: 3
-  hearingRange: 20
+  hearingRange: 10
   lookRange: 15
   talkRate: 10

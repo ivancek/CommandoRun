@@ -1690,6 +1690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab48e5c48553cdc44a2f1d73f51e813d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  height: 5
   sentences:
   - What a lovely world this is.
   - You know, I could have stayed at home.

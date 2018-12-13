@@ -4,18 +4,66 @@ using UnityEngine;
 
 public class SpeechComponent : MonoBehaviour
 {
-    public string[] sentences;
+    public float height;
+
+    [Multiline]
+    public string[] randomSentences;
+    [Multiline]
+    public string[] instructions;
 
     private float lastTimeSpoken;
+    private ChatBubble chatBubble;
+    private int currentInstruction;
+
+
+
+
+    private void Start()
+    {
+        chatBubble = GameInstance.GameMode.HUD.SpawnWidget<ChatBubble>();
+        chatBubble.gameObject.SetActive(false);
+    }
+
+
+    private void Update()
+    {
+        chatBubble.transform.position = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, height, transform.position.z), Camera.MonoOrStereoscopicEye.Mono);
+    }
+
+
+    public void InstructionsSpeak(float rate)
+    {
+        if(currentInstruction >= instructions.Length)
+        {
+            chatBubble.gameObject.SetActive(false);
+            return;
+        }
+
+        if (Time.time > lastTimeSpoken + rate)
+        {
+            lastTimeSpoken = Time.time;
+
+            chatBubble.SetText(instructions[currentInstruction++]);
+            chatBubble.gameObject.SetActive(true);
+        }
+    }
 
     public void RandomSpeak(float rate)
     {
-        if(Time.time > lastTimeSpoken + rate)
+        if (Time.time > lastTimeSpoken + rate)
         {
-            int randomInt = Random.Range(0, sentences.Length);
+            int randomInt = Random.Range(0, randomSentences.Length);
             lastTimeSpoken = Time.time;
 
-            Debug.LogFormat("{0}:\"{1}\"", name, sentences[randomInt]);
+            chatBubble.SetText(randomSentences[randomInt]);
+            chatBubble.gameObject.SetActive(true);
+
+            Invoke("DisableChatBubble", 4.5f);
         }
+    }
+
+    private void DisableChatBubble()
+    {
+        chatBubble.gameObject.SetActive(false);
     }
 }

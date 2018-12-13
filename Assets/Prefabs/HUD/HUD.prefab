@@ -112,6 +112,7 @@ MonoBehaviour:
   viewport: {fileID: 224421520845778574}
   widgetPrefabs:
   - {fileID: 114716540474100892, guid: 0323dd93120f54c4684477f4c2388ecb, type: 2}
+  - {fileID: 114788958813649606, guid: c7ab5642d90f1034bbce48136c8ad4b6, type: 2}
 --- !u!114 &114801010339389908
 MonoBehaviour:
   m_ObjectHideFlags: 1

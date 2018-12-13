@@ -8,4 +8,5 @@ public class EnemyStats : ScriptableObject
     public float hearingRange;
     public float lookRange;
     public float talkRate;
+    public float instructionsRate;
 }

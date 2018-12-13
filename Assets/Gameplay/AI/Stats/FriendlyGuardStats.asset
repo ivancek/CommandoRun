@@ -15,3 +15,4 @@ MonoBehaviour:
   hearingRange: 20
   lookRange: 15
   talkRate: 5
+  instructionsRate: 3
