@@ -19,7 +19,6 @@ public class AIController : Controller
     [HideInInspector] public NavMeshAgent navMeshAgent;
     [HideInInspector ]public float stateTime;
 
-
     public override void NotifyPawnControlled(Pawn controlledPawn)
     {
         base.NotifyPawnControlled(controlledPawn);

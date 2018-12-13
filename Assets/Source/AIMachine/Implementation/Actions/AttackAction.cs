@@ -20,6 +20,7 @@ public class AttackAction : StateAction
     {
         Soldier soldier = (Soldier)controller.GetControlledPawn();
         IDamageReceiver target = controller.target as IDamageReceiver;
+        soldier.LookAtInstant(controller.target.transform.position);
 
         if (soldier.IsInWeaponRange(controller.target.transform.position))
         {

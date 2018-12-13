@@ -14,30 +14,35 @@ public class SightDecision : Decision
 
     private bool See(AIController controller)
     {
-        bool isPlayerAlive = GameInstance.GameMode.PlayerPawn.enabled;
+        bool playerSeen = false;
 
-        bool isPlayerInRange = Vector3.Distance(GameInstance.GameMode.PlayerPawn.transform.position, controller.GetControlledPawn().transform.position) <= controller.enemyStats.lookRange;
+        bool isPlayerInRange = Vector3.Distance(controller.target.transform.position, controller.GetControlledPawn().transform.position) <= controller.enemyStats.lookRange;
 
-        Vector3 directionToPlayer = GameInstance.GameMode.PlayerPawn.transform.position - controller.GetControlledPawn().transform.position;
-        float dotProduct = Vector3.Dot(controller.GetControlledPawn().transform.forward, directionToPlayer.normalized);
+        RaycastHit hit;
+        Vector3 eyePosition = new Vector3(controller.transform.position.x, 2.4f, controller.transform.position.z);
 
-        bool canSeePlayer = dotProduct > 0.5f;
-        bool playerSeen = isPlayerInRange && canSeePlayer;
-
-        if(playerSeen)
+        if(isPlayerInRange)
         {
-            DrawLine(controller);
+            Vector3 direction = controller.target.transform.position - controller.transform.position;
+
+            if (Physics.SphereCast(eyePosition, 1.0f, direction, out hit, controller.enemyStats.lookRange))
+            {
+                playerSeen = hit.collider.gameObject.layer == 11;
+
+                Debug.DrawLine(eyePosition, hit.point, Color.red);
+            }
+        }
+        else
+        {
+            if (Physics.SphereCast(eyePosition, 1.0f, controller.transform.forward, out hit, controller.enemyStats.lookRange))
+            {
+                playerSeen = hit.collider.gameObject.layer == 11;
+
+                Debug.DrawLine(eyePosition, hit.point, Color.red);
+            }
         }
 
+
         return playerSeen;
-    }
-
-    private void DrawLine(AIController controller)
-    {
-        Transform target = GameInstance.GameMode.PlayerPawn.transform;
-        Vector3 start = new Vector3(controller.transform.position.x, 2.4f, controller.transform.position.z);
-        Vector3 end = new Vector3(target.position.x, target.GetComponent<CapsuleCollider>().center.y, target.position.z);
-
-        Debug.DrawLine(start, end, Color.red);
     }
 }

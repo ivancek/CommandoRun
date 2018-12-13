@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4854026395925720}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4974003524479648}
   - component: {fileID: 114748068079186750}
   - component: {fileID: 135349787229820276}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4754317066401456}
   - component: {fileID: 108143405198818894}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656c91b84ca5d7d41b32fa2f10af5b93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canTick: 1
+  initOnAwake: 1
   itemData: {fileID: 11400000, guid: f660649389584d649b456b2817d4a954, type: 2}
   pivot: {fileID: 4854026395925720}
   myLight: {fileID: 108143405198818894}

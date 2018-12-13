@@ -9,14 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f83e009c297dc542a00c5823c15fe10, type: 3}
-  m_Name: EnemyIdle
+  m_Name: EnemySuspicious
   m_EditorClassIdentifier: 
   actions:
-  - {fileID: 11400000, guid: 176ceda16a5aab349824326f2c59afea, type: 2}
+  - {fileID: 11400000, guid: ee8f64fa2b64c3746a4cb288e50dea9f, type: 2}
   transitions:
-  - decision: {fileID: 11400000, guid: 37a90a027a706864a9fc8d94e86db302, type: 2}
-    trueState: {fileID: 11400000, guid: 86b33c34b44cabe41a73bb8fbeb2f8b5, type: 2}
+  - decision: {fileID: 11400000, guid: 9f1e4c31462838f4098b7862ee30f92f, type: 2}
+    trueState: {fileID: 11400000, guid: b29e28608305e5943b27ad04d000f751, type: 2}
     falseState: {fileID: 11400000, guid: 5af510e78108d7242bd014f8d0c7dfea, type: 2}
-  - decision: {fileID: 11400000, guid: 5be759e75faa5f24ab396b22c9b9b7ba, type: 2}
+  - decision: {fileID: 11400000, guid: 37a90a027a706864a9fc8d94e86db302, type: 2}
     trueState: {fileID: 11400000, guid: 86b33c34b44cabe41a73bb8fbeb2f8b5, type: 2}
     falseState: {fileID: 11400000, guid: 5af510e78108d7242bd014f8d0c7dfea, type: 2}
