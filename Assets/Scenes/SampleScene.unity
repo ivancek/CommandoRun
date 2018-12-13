@@ -5137,7 +5137,7 @@ Prefab:
     - target: {fileID: 114102749641681232, guid: 4eea09b09a380f940b6e580e00b8958a,
         type: 2}
       propertyPath: instructions.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4757482029221870, guid: 4eea09b09a380f940b6e580e00b8958a, type: 2}
       propertyPath: m_LocalPosition.x
@@ -5268,6 +5268,11 @@ Prefab:
         type: 2}
       propertyPath: instructions.Array.data[5]
       value: Enemies can hear you when you run.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114102749641681232, guid: 4eea09b09a380f940b6e580e00b8958a,
+        type: 2}
+      propertyPath: instructions.Array.data[6]
+      value: Go kill some enemies. Good luck!
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4eea09b09a380f940b6e580e00b8958a, type: 2}

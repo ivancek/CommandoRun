@@ -37,12 +37,12 @@ public class Soldier : Pawn, IDamageReceiver
     public EquipableDevice PrimaryDevice { get; protected set; } 
     public Transform Transform { get { return transform; } }
     public IDamageReceiver QueuedTarget { get; private set; }
+    public bool DestinationReached { get { return Vector3.Distance(transform.position, navAgent.destination) <= navAgent.stoppingDistance; } }
     
 
     // Private Properties for easier code reading.
     private int AnimatorSpeed { get { return isRunning ? 2 : 1; } }
     private float NavAgentSpeed { get { return isRunning ? RUN_SPEED : WALK_SPEED; } }
-    private bool DestinationReached { get { return Vector3.Distance(transform.position, navAgent.destination) <= navAgent.stoppingDistance; } }
 
 
     // Private fields

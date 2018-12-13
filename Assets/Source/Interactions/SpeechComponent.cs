@@ -16,12 +16,15 @@ public class SpeechComponent : MonoBehaviour
     private int currentInstruction;
 
 
-
-
     private void Start()
     {
         chatBubble = GameInstance.GameMode.HUD.SpawnWidget<ChatBubble>();
         chatBubble.gameObject.SetActive(false);
+
+        // Reduce initial delay for speach by 2 seconds.
+        // This is to make the first message appear faster
+        // than it normally would if it used the talk rate
+        lastTimeSpoken = -2;
     }
 
 
@@ -35,7 +38,6 @@ public class SpeechComponent : MonoBehaviour
     {
         if(currentInstruction >= instructions.Length)
         {
-            chatBubble.gameObject.SetActive(false);
             return;
         }
 
@@ -45,6 +47,11 @@ public class SpeechComponent : MonoBehaviour
 
             chatBubble.SetText(instructions[currentInstruction++]);
             chatBubble.gameObject.SetActive(true);
+
+            if(currentInstruction == instructions.Length)
+            {
+                Invoke("DisableChatBubble", rate);
+            }
         }
     }
 

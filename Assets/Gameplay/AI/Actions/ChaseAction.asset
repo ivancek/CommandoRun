@@ -11,4 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1679e37f7bee5114096c82d950bb7658, type: 3}
   m_Name: ChaseAction
   m_EditorClassIdentifier: 
-  moveStopDistance: 0.5
+  moveStopDistance: 2

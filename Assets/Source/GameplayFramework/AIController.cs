@@ -16,6 +16,7 @@ public class AIController : Controller
     public EnemyStats enemyStats;
 
     [HideInInspector] public Actor target;
+    [HideInInspector] public Vector3 spawnPoint;
     [HideInInspector] public NavMeshAgent navMeshAgent;
     [HideInInspector ]public float stateTime;
 
@@ -24,6 +25,7 @@ public class AIController : Controller
         base.NotifyPawnControlled(controlledPawn);
 
         target = GameInstance.GameMode.PlayerPawn;
+        spawnPoint = controlledPawn.transform.position;
         navMeshAgent = controlledPawn.GetComponent<NavMeshAgent>();
     }
 
